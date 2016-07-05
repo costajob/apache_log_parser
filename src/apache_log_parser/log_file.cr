@@ -1,8 +1,10 @@
 require "zlib"
+require "./format.cr"
 
 module ApacheLogParser
   class LogFile
-    def initialize(@src : String)
+    def initialize(@src : String, format : String)
+      @format = Format.new(format)
     end
 
     def name
@@ -13,10 +15,14 @@ module ApacheLogParser
       File.open(@src, "r") do |src|
         Zlib::Inflate.gzip(src) do |gz|
           gz.each_line do |line|
-            yield(line)
+            yield(matchings(line))
           end
         end
       end
+    end
+
+    private def matchings(line)
+      line.match(@format.regex)
     end
   end
 end
