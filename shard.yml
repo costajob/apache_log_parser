@@ -1,0 +1,7 @@
+name: apache_log_parser
+version: 0.1.0
+
+authors:
+  - costajob <costajob@gmail.com>
+
+license: MIT
