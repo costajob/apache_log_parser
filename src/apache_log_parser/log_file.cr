@@ -1,5 +1,6 @@
 require "zlib"
 require "./format.cr"
+require "./row.cr"
 
 module ApacheLogParser
   class LogFile
@@ -11,18 +12,16 @@ module ApacheLogParser
       File.basename(@src)
     end
 
-    def each_line
+    def each_row
       File.open(@src, "r") do |src|
         Zlib::Inflate.gzip(src) do |gz|
           gz.each_line do |line|
-            yield(matchings(line))
+            data = line.match(@format.regex).as(Regex::MatchData)
+            row = Row.factory(data)
+            yield(row)
           end
         end
       end
-    end
-
-    private def matchings(line)
-      line.match(@format.regex)
     end
   end
 end

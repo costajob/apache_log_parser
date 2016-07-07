@@ -10,11 +10,11 @@ describe ApacheLogParser::LogFile do
   it "should yeald each line" do
     src = File.expand_path("../../samples/access_log.gz", __FILE__)
     log_file = ApacheLogParser::LogFile.new(src, Stubs.formats.last)
-    lines = [] of Regex::MatchData?
-    log_file.each_line do |line|
-      lines << line
+    rows = [] of ApacheLogParser::Row
+    log_file.each_row do |row|
+      rows << row
     end
-    lines.size.should eq 23
-    lines[0].try(&.["true_client_ip"]).should eq "192.40.202.240"
+    rows.size.should eq 23
+    rows[3].true_client_ip.should eq "126.245.6.49"
   end
 end
