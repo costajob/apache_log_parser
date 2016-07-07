@@ -9,7 +9,7 @@ module ApacheLogParser
                    @hits_by_ip = Hash(String, Int32).new { |h,k| h[k] = 0 })
     end
 
-    def render(rows, io)
+    def render(rows, io : IO)
       collect_hits(rows)
       io.puts title
       io.puts data("HTTP STATUS", @hits_by_status)

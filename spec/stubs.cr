@@ -1,6 +1,8 @@
 module Stubs
   extend self
 
+  DEFAULT_PATH = File.expand_path("../../samples", __FILE__)
+
   class Row
     getter :time, :status, :user_agent, :true_client_ip
 

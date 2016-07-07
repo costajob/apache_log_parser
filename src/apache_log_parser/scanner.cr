@@ -11,7 +11,7 @@ module ApacheLogParser
     def initialize(@path : String, @filters : Array(Filters::Base), format = DEFAULT_FORMAT)
       @format = Format.new(format)
       @results = Hash(String, Array(Row)).new do |h, k|
-        h[k] = [] of Array(Row)
+        h[k] = [] of Row
       end
     end
 
