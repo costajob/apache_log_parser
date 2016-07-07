@@ -5,6 +5,8 @@ require "./row.cr"
 module ApacheLogParser
   class LogFile
     VALID_EXTENSIONS = %w(.gz)
+
+    class InvalidFormatError < TypeCastError; end
     
     def self.ext_pattern
       String.build do |str|
@@ -25,8 +27,9 @@ module ApacheLogParser
       File.open(@src, "r") do |src|
         Zlib::Inflate.gzip(src) do |gz|
           gz.each_line do |line|
-            data = line.match(@regex).as(Regex::MatchData)
-            row = Row.factory(data)
+            data = line.match(@regex)
+            raise InvalidFormatError.new("Invalid log file line format: #{line}") unless data
+            row = Row.factory(data.as(Regex::MatchData))
             yield(row)
           end
         end

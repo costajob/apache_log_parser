@@ -6,7 +6,7 @@ describe ApacheLogParser::Scanner do
     filters << ApacheLogParser::Filters::TimeRange.new(from: "2016-07-03-04:56:24+0200", to: "2016-07-03-04:56:27+0200")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
     scanner.call
-    scanner.results["access_log.gz"].size.should eq 9
+    scanner.results["access_log.gz"].size.should eq 11
   end
 
   it "should collect results by HTTP status filter" do
@@ -14,7 +14,7 @@ describe ApacheLogParser::Scanner do
     filters << ApacheLogParser::Filters::Status.new("200")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
     scanner.call
-    scanner.results["access_log.gz"].size.should eq 5
+    scanner.results["access_log.gz"].size.should eq 7
   end
 
   it "should collect results by user agent filter" do

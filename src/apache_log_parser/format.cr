@@ -6,12 +6,12 @@ module ApacheLogParser
       %(%u) => "(?<user>\\w+|-)",
       %(%v) => "(?<server_name>\\w+)",
       %(%t) => "\\[(?<time>.+)\\]",
-      %("%r") => "\"(?<request>.+?)\"",
+      %("%r") => "\"(?<request>.+?|.?)\"",
       %(%>s) => "(?<status>\\d{3})",
       %(%b) => "(?<bytes>\\w+|-)",
-      %("%{Referer}i") => "\"(?<referer>.+?)\"",
-      %("%{User-Agent}i") => "\"(?<user_agent>.+?)\"",
-      %("%{True-Client-IP}i") => "\"(?<true_client_ip>(?:[0-9]{1,3}\\.){3}[0-9]{1,3})\""
+      %("%{Referer}i") => "\"(?<referer>.+?|.?)\"",
+      %("%{User-Agent}i") => "\"(?<user_agent>.+?|.?)\"",
+      %("%{True-Client-IP}i") => "\"(?<true_client_ip>(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|-)\""
     }
 
     REPLACEMENTS = /#{FORMATS.keys.join("|")}/
