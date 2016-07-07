@@ -2,6 +2,7 @@
 /libs/
 /.crystal/
 /.shards/
+/apache_log_parser
 
 
 # Libraries don't need dependency lock
