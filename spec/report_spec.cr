@@ -7,6 +7,7 @@ describe ApacheLogParser::Report do
     report.render(Stubs.rows, io)
     io.rewind
     iter = io.each_line
+    iter.next
     iter.next.should eq "\e[33;1maccess.gz\e[0m\n"
     iter.next
     iter.next.should eq "HTTP STATUS       HITS   \n"

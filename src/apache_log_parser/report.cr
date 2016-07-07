@@ -11,6 +11,7 @@ module ApacheLogParser
 
     def render(rows, io : IO)
       collect_hits(rows)
+      io.puts
       io.puts title
       io.puts data("HTTP STATUS", @hits_by_status)
       io.puts data("HOUR", @hits_by_hour)

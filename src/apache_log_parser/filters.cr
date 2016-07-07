@@ -5,7 +5,7 @@ module ApacheLogParser
     end
 
     struct TimeRange < Base
-      TIME_FORMAT = "%F-%T"
+      TIME_FORMAT = "%F-%T%z"
 
       class InvalidTimeRangeError < Exception; end
 

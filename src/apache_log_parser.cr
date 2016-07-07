@@ -15,12 +15,12 @@ module ApacheLogParser
     def call
       setup
       return if @filters.empty?
-      Scanner.new(filters: @filters, path: @src).call(STDOUT)
+      Scanner.new(@src, @filters).call(STDOUT)
     end
 
     private def setup
       OptionParser.parse! do |parser|
-        parser.banner = "Usage: ./apache_log_parser -s ./samples -f 2016-07-03-04:56:24 -t 2016-07-03-04:56:27 -h 201 -a iphone"
+        parser.banner = "Usage: ./apache_log_parser --src=./samples --from=2016-07-03-03:56:24+0100 --to=2016-07-03-03:56:27+0100 --code=201 --agent=iphone"
 
         parser.on("-s SRC", "--src=SRC", "Specify log files path (default to CWD)") do |src| 
           @src = src
@@ -34,12 +34,8 @@ module ApacheLogParser
           @to = to
         end
 
-        if @from && @to
-          @filters << Filters::TimeRange.new(@from.as(String), @to.as(String))
-        end
-
-        parser.on("-h STATUS", "--http_status=STATUS", "Filter by HTTP status") do |status|
-          @filters << Filters::Status.new(status)
+        parser.on("-c CODE", "--code=CODE", "Filter by HTTP code") do |code|
+          @filters << Filters::Status.new(code)
         end
 
         parser.on("-a AGENT", "--agent=AGENT", "Filter by user agent status") do |agent|
@@ -48,6 +44,8 @@ module ApacheLogParser
 
         parser.on("-h", "--help", "Show this help") { puts parser }
       end
+
+      @filters << Filters::TimeRange.new(@from.as(String), @to.as(String)) if @from && @to
     end
   end
 end
