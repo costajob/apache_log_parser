@@ -4,8 +4,17 @@ require "./row.cr"
 
 module ApacheLogParser
   class LogFile
-    def initialize(@src : String, format : String)
-      @format = Format.new(format)
+    VALID_EXTENSIONS = %w(.gz)
+    
+    def self.ext_pattern
+      String.build do |str|
+        str << "*{"
+        str << VALID_EXTENSIONS.join(",")
+        str << "}"
+      end
+    end
+
+    def initialize(@src : String, @regex : Regex)
     end
 
     def name
@@ -16,7 +25,7 @@ module ApacheLogParser
       File.open(@src, "r") do |src|
         Zlib::Inflate.gzip(src) do |gz|
           gz.each_line do |line|
-            data = line.match(@format.regex).as(Regex::MatchData)
+            data = line.match(@regex).as(Regex::MatchData)
             row = Row.factory(data)
             yield(row)
           end
