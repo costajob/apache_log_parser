@@ -6,9 +6,17 @@ module ApacheLogParser
 
     getter :host, :logname, :user, :server_name, :time, :request, :status, :bytes, :referer, :user_agent, :true_client_ip
 
-    def initialize(@host : String, @logname : String, @user : String, @server_name : String,
-                   @time : Time, @request : String, @status : Int32, @bytes : Int32,
-                   @referer : String, @user_agent : String, @true_client_ip : String)
+    def initialize(@host : String, 
+                   @logname : String, 
+                   @user : String, 
+                   @server_name : String,
+                   @time : Time, 
+                   @request : String, 
+                   @status : Int32, 
+                   @bytes : Int32,
+                   @referer : String, 
+                   @user_agent : String, 
+                   @true_client_ip : String)
     end
 
     def self.factory(data)

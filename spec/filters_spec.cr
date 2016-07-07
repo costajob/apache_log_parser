@@ -10,21 +10,21 @@ describe ApacheLogParser::Filters do
 
     it "should match row by time range" do
       filter = ApacheLogParser::Filters::TimeRange.new(from: "2016-02-02-11:23:01", to: "2016-02-02-11:33:01")
-      filter.matches?(Stubs::Row)
+      filter.matches?(Stubs.rows[0])
     end
   end
 
   context ApacheLogParser::Filters::Status do
     it "should match row by HTTP status" do
       filter = ApacheLogParser::Filters::Status.new("201")
-      filter.matches?(Stubs::Row)
+      filter.matches?(Stubs.rows[0])
     end
   end
 
   context ApacheLogParser::Filters::UserAgent do
     it "should match row by user agent" do
       filter = ApacheLogParser::Filters::UserAgent.new("iphone")
-      filter.matches?(Stubs::Row)
+      filter.matches?(Stubs.rows[0])
     end
   end
 end
