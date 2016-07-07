@@ -19,7 +19,7 @@ describe ApacheLogParser::Row do
     row.time.epoch.should eq 0
     row.status.should eq 0
     row.bytes.should eq 0
-    row.true_client_ip.should eq ""
+    row.true_client_ip.should eq "-"
   end
 
   it "should parse time value" do
