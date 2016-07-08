@@ -20,11 +20,4 @@ describe ApacheLogParser::Filters do
       filter.matches?(Stubs.rows[0])
     end
   end
-
-  context ApacheLogParser::Filters::UserAgent do
-    it "should match row by user agent" do
-      filter = ApacheLogParser::Filters::UserAgent.new("iphone")
-      filter.matches?(Stubs.rows[0])
-    end
-  end
 end

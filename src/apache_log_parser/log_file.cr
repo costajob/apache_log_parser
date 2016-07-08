@@ -29,8 +29,7 @@ module ApacheLogParser
           gz.each_line do |line|
             data = line.match(@regex)
             raise InvalidFormatError.new("Invalid log file line format: #{line}") unless data
-            row = Row.factory(data)
-            yield(row)
+            yield(Row.new(data))
           end
         end
       end

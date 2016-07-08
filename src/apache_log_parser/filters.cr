@@ -32,23 +32,11 @@ module ApacheLogParser
     end
 
     struct Status < Base
-      @status : Int32
-
-      def initialize(status : String)
-        @status = status.to_i
+      def initialize(@status : String)
       end
 
       def matches?(row)
         @status == row.status
-      end
-    end
-
-    struct UserAgent < Base
-      def initialize(@user_agent : String)
-      end
-
-      def matches?(row)
-        row.user_agent.match(/\b#{@user_agent}/i)
       end
     end
   end
