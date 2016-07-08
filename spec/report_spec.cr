@@ -8,7 +8,8 @@ describe ApacheLogParser::Report do
     io.rewind
     iter = io.each_line
     iter.next
-    iter.next.should eq "access.gz         19     \e[0m\n"
+    iter.next.should eq "access.gz         19     \n"
+    iter.next.should eq "\e[0m-------------------------\n"
     iter.next
     iter.next.should eq "HTTP STATUS       HITS   \n"
     iter.next.should eq "\e[0m-------------------------\n"

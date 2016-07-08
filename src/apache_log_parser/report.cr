@@ -4,6 +4,7 @@ require "./row.cr"
 module ApacheLogParser
   class Report
     HOUR_FORMAT = "%F %Hh"
+    HR = "-" * 25
 
     def initialize(@name : String,
                    @hits_by_status = Hash(String, Int32).new { |h,k| h[k] = 0 },
@@ -28,13 +29,17 @@ module ApacheLogParser
     end
 
     private def title(n)
-      ("\n%-17s %-7\d" % [@name, n]).colorize(:yellow).bold
+      String.build do |str|
+        str << ("\n%-17s %-7\d\n" % [@name, n]).colorize(:yellow).bold
+        str << HR
+        str << "\n"
+      end
     end
 
     private def header(title)
       String.build do |str|
         str << ("\n%-17s %-7s\n" % [title, "HITS"]).colorize(:light_gray).bold
-        str << "-" * 25
+        str << HR
         str << "\n"
       end
     end
