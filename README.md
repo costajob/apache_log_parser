@@ -49,7 +49,7 @@ The following benchmarks was measured on a MacBook PRO 15 late 2011, 4CPUs, 8GB 
 
 ### Results
 
-|  Access File(s)        | Execution Time     |   RAM Peak (MB) |
+|  Access File(s)        | Execution Time     |   RAM Peak (GB) |
 | :----------------------| -----------------: |---------------: |
-| 1 x ~130MB             |         3m14.860s  |          61.25  |
-| 2 x ~130MB             |         6m49.222s  |         113.18  |
+| 1 x ~130MB             |         3m13.851s  |           1.22  |
+| 2 x ~130MB             |         6m37.267s  |           2.34  |
