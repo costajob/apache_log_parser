@@ -1,3 +1,13 @@
+## Table of Contents
+* [Scope](#scope)
+* [Enhancements](#enhancements)
+* [Usage](#usage)
+  * [Help](#help)
+  * [Filters](#filters)
+* [Performance](#performance)
+  * [Platform](#platform)
+  * [Results](#results)
+
 # apache_log_parser
 This is a Crystal porting of the original [GO library](https://github.com/costajob/apache-log-parser).
 
@@ -34,7 +44,12 @@ You can filter logs data by specifying the source path, filtering by HTTP code a
 ## Performance
 I measured performance by prepending each run with the time call and inspecting memory consumption by using Xcode's Instruments.
 
-|  Access File(s)        | Execution Time     |   RAM Peak (GB) |
+### Platform
+The following benchmarks was measured on a MacBook PRO 15 late 2011, 4CPUs, 8GB RAM.
+
+### Results
+
+|  Access File(s)        | Execution Time     |   RAM Peak (MB) |
 | :----------------------| -----------------: |---------------: |
-| 1 x ~130MB             |         3m23.392s  |           1.22  |
-| 2 x ~130MB             |         7m14.163s  |           2.34  |
+| 1 x ~130MB             |         3m14.860s  |          61.25  |
+| 2 x ~130MB             |         6m49.222s  |         113.18  |

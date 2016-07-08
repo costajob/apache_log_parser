@@ -18,6 +18,7 @@ module ApacheLogParser
           @results[log_file.name] << row if @filters.all? { |filter| filter.matches?(row) }
         end
         Report.new(log_file.name).render(@results[log_file.name], output)
+        GC.collect
       end
     end
 
