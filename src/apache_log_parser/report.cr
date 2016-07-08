@@ -13,7 +13,6 @@ module ApacheLogParser
 
     def render(rows, io : IO)
       collect_hits(rows)
-      io.puts
       io.puts title(rows.size)
       io.puts data(title: "HTTP STATUS", data: @hits_by_status, sort: true)
       io.puts data(title: "HOUR", data: @hits_by_hour)
@@ -29,17 +28,13 @@ module ApacheLogParser
     end
 
     private def title(n)
-      String.build do |str|
-        str << @name.colorize(:yellow).bold
-        str << " - "
-        str << "#{n}".colorize(:magenta).bold
-      end
+      ("\n%-17s %-7\d" % [@name, n]).colorize(:yellow).bold
     end
 
     private def header(title)
       String.build do |str|
         str << ("\n%-17s %-7s\n" % [title, "HITS"]).colorize(:light_gray).bold
-        str << "-" * 22
+        str << "-" * 25
         str << "\n"
       end
     end

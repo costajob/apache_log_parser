@@ -36,5 +36,5 @@ I measured performance by prepending each run with the time call and inspecting 
 
 |  Access File(s)        | Execution Time     |   RAM Peak (GB) |
 | :----------------------| -----------------: |---------------: |
-| 1 x ~130MB             |         1m53.893s  |           3.83  |
-| 2 x ~130MB             |         3m49.203s  |           7.98  |
+| 1 x ~130MB             |         3m23.392s  |           1.22  |
+| 2 x ~130MB             |         7m14.163s  |           2.34  |

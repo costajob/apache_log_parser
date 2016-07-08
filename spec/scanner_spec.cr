@@ -14,7 +14,7 @@ describe ApacheLogParser::Scanner do
     filters << ApacheLogParser::Filters::Status.new("200")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters, Stubs.regexs.first)
     scanner.call
-    scanner.results["access_log.gz"].size.should eq 7
+    scanner.results["access_log.gz"].size.should eq 8
   end
 
   it "should collect results by combining filters" do
