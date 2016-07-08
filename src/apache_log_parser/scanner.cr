@@ -4,14 +4,9 @@ require "./report.cr"
 
 module ApacheLogParser
   class Scanner
-    DEFAULT_FORMAT = %(%h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-Agent}i" "%{True-Client-IP}i")
-
     getter :results
 
-    @regex : Regex
-
-    def initialize(@path : String, @filters : Array(Filters::Base), format = DEFAULT_FORMAT)
-      @regex = Format.new(format).regex
+    def initialize(@path : String, @filters : Array(Filters::Base), @regex : Regex)
       @results = Hash(String, Array(Row)).new do |h, k|
         h[k] = [] of Row
       end

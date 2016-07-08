@@ -30,7 +30,7 @@ module ApacheLogParser
       String.build do |str|
         str << @name.colorize(:yellow).bold
         str << " - "
-        str << n
+        str << "#{n}".colorize(:magenta).bold
       end
     end
 
