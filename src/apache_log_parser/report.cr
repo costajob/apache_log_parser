@@ -3,6 +3,8 @@ require "./row.cr"
 
 module ApacheLogParser
   class Report
+    HOUR_FORMAT = "%F %Hh"
+
     def initialize(@name : String,
                    @hits_by_status = Hash(String, Int32).new { |h,k| h[k] = 0 },
                    @hits_by_hour = Hash(String, Int32).new { |h,k| h[k] = 0 },
@@ -13,7 +15,7 @@ module ApacheLogParser
       collect_hits(rows)
       io.puts
       io.puts title(rows.size)
-      io.puts data(title: "HTTP STATUS", data: @hits_by_status)
+      io.puts data(title: "HTTP STATUS", data: @hits_by_status, sort: true)
       io.puts data(title: "HOUR", data: @hits_by_hour)
       io.puts data(title: "TRUE IP", data: @hits_by_ip, limit: 10, sort: true)
     end
@@ -21,7 +23,7 @@ module ApacheLogParser
     private def collect_hits(rows)
       rows.each do |row|
         @hits_by_status[row.status.to_s] += 1
-        @hits_by_hour[row.time.to_s("%F %Hh")] += 1
+        @hits_by_hour[row.time.to_s(HOUR_FORMAT)] += 1
         @hits_by_ip[row.true_client_ip] += 1
       end
     end

@@ -3,7 +3,7 @@ require "./format.cr"
 require "./row.cr"
 
 module ApacheLogParser
-  class LogFile
+  struct LogFile
     VALID_EXTENSIONS = %w(.gz)
 
     class InvalidFormatError < TypeCastError; end
