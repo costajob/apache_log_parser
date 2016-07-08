@@ -34,4 +34,14 @@ describe ApacheLogParser::Scanner do
     scanner.call
     scanner.results["access_log.gz"].size.should eq 6
   end
+
+  it "should set rgex basing on format" do
+    slim_format = %(%t %_ %>s %_ "%{True-Client-IP}i"$)
+    filters = [] of ApacheLogParser::Filters::Base
+    filters << ApacheLogParser::Filters::TimeRange.new(from: "2016-07-03-04:56:22+0200", to: "2016-07-03-04:56:27+0200")
+    filters << ApacheLogParser::Filters::Status.new("304")
+    scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters, slim_format)
+    scanner.call
+    scanner.results["access_log.gz"].size.should eq 11
+  end
 end

@@ -8,8 +8,10 @@ module ApacheLogParser
 
     getter :results
 
+    @regex : Regex
+
     def initialize(@path : String, @filters : Array(Filters::Base), format = DEFAULT_FORMAT)
-      @format = Format.new(format)
+      @regex = Format.new(format).regex
       @results = Hash(String, Array(Row)).new do |h, k|
         h[k] = [] of Row
       end
@@ -25,7 +27,7 @@ module ApacheLogParser
     end
 
     private def log_files
-      Dir["#{@path}/#{LogFile.ext_pattern}"].map { |src| LogFile.new(src, @format.regex) }
+      Dir["#{@path}/#{LogFile.ext_pattern}"].map { |src| LogFile.new(src, @regex) }
     end
   end
 end
