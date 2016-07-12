@@ -19,7 +19,7 @@ module ApacheLogParser
       end
 
       def matches?(row)
-        (@from..@to).includes?(row.time)
+        row.time >= @from && row.time <= @to
       end
 
       private def check_time_range
