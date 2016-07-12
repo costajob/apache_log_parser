@@ -6,7 +6,7 @@ module Stubs
   class Row
     getter :time, :status, :user_agent, :true_client_ip
 
-    def initialize(@time : Time, @status : Int32, 
+    def initialize(@time : Time, @status : String, 
                    @user_agent : String, @true_client_ip : String)
     end
   end
@@ -14,9 +14,9 @@ module Stubs
   def rows
     19.times.reduce([] of Row) do |rows, i|
       rows << Row.new(Time.new(2016, 2, 2, 11, 23 + i, 1), 
-                      i.even? ? 201 : 301,
+                      i.even? ? "201" : "301",
                       "Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13F69 Safari/601.1", 
-                      i.even? ? "211.157.178.224" : "182.249.245.24")
+                      i.even? ? "211.157.178.224" : "-")
       rows
     end
   end

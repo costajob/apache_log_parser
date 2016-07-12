@@ -23,6 +23,6 @@ describe ApacheLogParser::Report do
     iter.next.should eq "TRUE IP           HITS   \n"
     iter.next.should eq "\e[0m-------------------------\n"
     iter.next.should eq "211.157.178.224   10\n"
-    iter.next.should eq "182.249.245.24    9\n"
+    iter.next.should be_a Iterator::Stop
   end
 end

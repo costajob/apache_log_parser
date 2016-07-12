@@ -15,9 +15,9 @@ module ApacheLogParser
     def render(rows, io : IO)
       collect_hits(rows)
       io.puts title(rows.size)
-      io.puts data(title: "HTTP STATUS", data: @hits_by_status, sort: true)
-      io.puts data(title: "HOUR", data: @hits_by_hour)
-      io.puts data(title: "TRUE IP", data: @hits_by_ip, limit: 10, sort: true)
+      io.puts hits(title: "HTTP STATUS", data: @hits_by_status, sort: true)
+      io.puts hits(title: "HOUR", data: @hits_by_hour)
+      io.puts hits(title: "TRUE IP", data: @hits_by_ip, limit: 10, sort: true)
     end
 
     private def collect_hits(rows)
@@ -44,16 +44,21 @@ module ApacheLogParser
       end
     end
 
-    private def data(title, data, limit = 100, sort = false)
+    private def hits(title, data, limit = 100, sort = false)
       String.build do |str|
         str << header(title)
-        data = data.to_a
-        data.sort! { |x, y| y[1] <=> x[1] } if sort
-        data.each_with_index do |matrix, i|
+        normalize_data(data, sort).each_with_index do |row, i|
           break if i == limit
-          str << "%-17s %d\n" % [matrix[0], matrix[1]]
+          str << "%-17s %d\n" % [row[0], row[1]]
         end
       end
+    end
+
+    private def normalize_data(data, sort)
+      data.delete("-")
+      data = data.to_a
+      data.sort! { |x, y| y[1] <=> x[1] } if sort
+      data
     end
   end
 end
