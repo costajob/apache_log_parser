@@ -16,6 +16,11 @@ describe ApacheLogParser::Report do
     iter.next.should eq "201               10\n"
     iter.next.should eq "301               9\n"
     iter.next
+    iter.next.should eq "HTTP VERB         HITS   \n"
+    iter.next.should eq "\e[0m-------------------------\n"
+    iter.next.should eq "get               10\n"
+    iter.next.should eq "post              9\n"
+    iter.next
     iter.next.should eq "HOUR              HITS   \n"
     iter.next.should eq "\e[0m-------------------------\n"
     iter.next.should eq "2016-02-02 11h    19\n"

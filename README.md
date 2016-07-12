@@ -38,7 +38,7 @@ Once compiled, you can check program help by typing:
 You can filter logs data by specifying the source path, filtering by HTTP code and time range:
 
 ```
-./apache_log_parser --src=/usr/local/apache/logs/older --code=500 --from=2016-07-03-04:10:13+0100 --to=2016-07-03-05:33:01+0100
+./apache_log_parser --src=/usr/local/apache/logs/older --from=2016-07-03-04:10:13+0100 --to=2016-07-03-05:33:01+0100 --code=500 --verb=head
 ``` 
 
 ## Performance
@@ -46,6 +46,13 @@ I measured performance by prepending each run with the time call and inspecting 
 
 ### Platform
 The following benchmarks was measured on a MacBook PRO 15 late 2011, 4CPUs, 8GB RAM.
+
+### Command
+The following command was used to benchmark:
+
+```
+time ./apache_log_parser -s /logs -c 304 -f 2016-06-30-00:00:00+0100 -t 2016-07-04-00:00:00+0100 -v post
+```
 
 ### Results
 

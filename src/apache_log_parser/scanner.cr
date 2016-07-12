@@ -4,20 +4,17 @@ require "./report.cr"
 
 module ApacheLogParser
   class Scanner
-    getter :results
-
     def initialize(@path : String, @filters : Array(Filters::Base), @regex : Regex)
-      @results = Hash(String, Array(Row)).new do |h, k|
-        h[k] = [] of Row
-      end
     end
 
     def call(output = MemoryIO.new)
-      log_files.each do |log_file|
+      log_files.map do |log_file|
+        filtered = [] of Row
         log_file.each_row do |row|
-          @results[log_file.name] << row if @filters.all? { |filter| filter.matches?(row) }
+          filtered << row if @filters.all? { |filter| filter.matches?(row) }
         end
-        Report.new(log_file.name).render(@results[log_file.name], output)
+        Report.new(log_file.name).render(filtered, output)
+        filtered.size
       end
     end
 

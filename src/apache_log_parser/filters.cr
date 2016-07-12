@@ -39,5 +39,23 @@ module ApacheLogParser
         @status == row.status
       end
     end
+
+    struct Verb < Base
+      VERBS = %w[get post put delete head options]
+
+      class InvalidVerbError < ArgumentError; end
+
+      def initialize(@verb : String)
+        check_verb
+      end
+
+      def matches?(row)
+        @verb == row.verb
+      end
+
+      private def check_verb
+        raise InvalidVerbError.new("#{@verb} is not supported") unless VERBS.includes?(@verb)
+      end
+    end
   end
 end

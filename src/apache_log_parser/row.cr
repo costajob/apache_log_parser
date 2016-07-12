@@ -20,6 +20,12 @@ module ApacheLogParser
       @true_client_ip = data["true_client_ip"]? || DASH
     end
 
+    def verb
+      @request.match(/(?<verb>(^\w+))/).try do |m|
+        m["verb"].downcase
+      end || "-"
+    end
+
     def []?(name)
       {% for ivar in @type.instance_vars %}
         return {{ivar.id}} if {{ivar.name.stringify}} == name

@@ -21,4 +21,10 @@ describe ApacheLogParser::Row do
       row[name]?.should eq "-"
     end
   end
+
+  it "should get HTTP verb" do
+    row = ApacheLogParser::Row.new({"request" => "HEAD /healthcheck.html HTTP/1.0"})
+    row.should be_a ApacheLogParser::Row
+    row.verb.should eq "head"
+  end
 end

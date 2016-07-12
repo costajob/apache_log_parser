@@ -3,7 +3,7 @@ require "./apache_log_parser/*"
 
 module ApacheLogParser
   class Main
-    SHORT_FORMAT = %(%t %_ %>s %_ "%{True-Client-IP}i"$)
+    FORMAT = %(%h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-Agent}i" "%{True-Client-IP}i")
 
     @from : String?
     @to : String?
@@ -11,32 +11,37 @@ module ApacheLogParser
     def initialize
       @filters = [] of Filters::Base
       @src = "./"
+      @format = Format.new(FORMAT)
     end
 
     def call
       setup
       return if @filters.empty?
-      Scanner.new(@src, @filters, Format.new(SHORT_FORMAT).regex).call(STDOUT)
+      Scanner.new(@src, @filters, @format.regex).call(STDOUT)
     end
 
     private def setup
       OptionParser.parse! do |parser|
-        parser.banner = "Usage: ./apache_log_parser --src=./samples --from=2016-07-03-03:56:24+0100 --to=2016-07-03-03:56:27+0100 --code=201"
+        parser.banner = "Usage: ./apache_log_parser -s /logs -f 2016-06-30-00:00:00+0100 -t 2016-07-04-00:00:00+0100 -v get -c 200"
 
         parser.on("-s SRC", "--src=SRC", "Specify log files path (default to CWD)") do |src| 
           @src = src
         end
         
-        parser.on("-f FROM", "--from=FROM", "Filter requests since this time") do |from|
+        parser.on("-f FROM", "--from=FROM", "Filter requests starting at this time") do |from|
           @from = from
         end
 
-        parser.on("-t TO", "--to=TO", "Filter requests until this time") do |to|
+        parser.on("-t TO", "--to=TO", "Filter requests ending at this time") do |to|
           @to = to
         end
 
         parser.on("-c CODE", "--code=CODE", "Filter by HTTP code") do |code|
           @filters << Filters::Status.new(code)
+        end
+
+        parser.on("-v VERB", "--verb=VERB", "Filter by HTTP verb") do |verb|
+          @filters << Filters::Verb.new(verb)
         end
 
         parser.on("-h", "--help", "Show this help") { puts parser }

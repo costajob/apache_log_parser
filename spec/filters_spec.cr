@@ -20,4 +20,17 @@ describe ApacheLogParser::Filters do
       filter.matches?(Stubs.rows[0])
     end
   end
+
+  context ApacheLogParser::Filters::Verb do
+    it "should raise an error for invalid verb" do
+      expect_raises(ApacheLogParser::Filters::Verb::InvalidVerbError) do
+        ApacheLogParser::Filters::Verb.new("noent")
+      end
+    end
+
+    it "should match row by HTTP status" do
+      filter = ApacheLogParser::Filters::Verb.new("post")
+      filter.matches?(Stubs.rows[1])
+    end
+  end
 end
