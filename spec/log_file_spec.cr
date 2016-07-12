@@ -7,13 +7,13 @@ describe ApacheLogParser::LogFile do
 
   it "should return name" do
     src = File.expand_path("../../samples/access_log.gz", __FILE__)
-    log_file = ApacheLogParser::LogFile.new(src, Stubs.regexs.last)
+    log_file = ApacheLogParser::LogFile.new(src)
     log_file.name.should eq "access_log.gz"
   end 
 
   it "should yeald each line" do
     src = File.expand_path("../../samples/access_log.gz", __FILE__)
-    log_file = ApacheLogParser::LogFile.new(src, Stubs.regexs.last)
+    log_file = ApacheLogParser::LogFile.new(src)
     rows = [] of ApacheLogParser::Row
     log_file.each_row do |row|
       rows << row

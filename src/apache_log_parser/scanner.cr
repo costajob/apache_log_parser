@@ -4,7 +4,7 @@ require "./report.cr"
 
 module ApacheLogParser
   class Scanner
-    def initialize(@path : String, @filters : Array(Filters::Base), @regex : Regex)
+    def initialize(@path : String, @filters : Array(Filters::Base))
     end
 
     def call(output = MemoryIO.new)
@@ -19,7 +19,7 @@ module ApacheLogParser
     end
 
     private def log_files
-      Dir["#{@path}/#{LogFile.ext_pattern}"].map { |src| LogFile.new(src, @regex) }
+      Dir["#{@path}/#{LogFile.ext_pattern}"].map { |src| LogFile.new(src) }
     end
   end
 end

@@ -4,7 +4,7 @@ module ApacheLogParser
     EPOCH = Time.epoch(0)
     DASH = "-"
 
-    getter :host, :logname, :user, :server_name, :time, :request, :status, :bytes, :referer, :user_agent, :true_client_ip
+    getter :host, :logname, :user, :server_name, :time, :request, :status, :bytes, :referer, :user_agent, :true_client_ip, :verb
 
     def initialize(data)
       @host = data["host"]? || DASH
@@ -18,18 +18,13 @@ module ApacheLogParser
       @referer = data["referer"]? || DASH
       @user_agent = data["user_agent"]? || DASH
       @true_client_ip = data["true_client_ip"]? || DASH
+      @verb = fetch_verb || DASH
     end
 
-    def verb
-      @request.match(/(?<verb>(^\w+))/).try do |m|
-        m["verb"].downcase
-      end || "-"
-    end
-
-    def []?(name)
-      {% for ivar in @type.instance_vars %}
-        return {{ivar.id}} if {{ivar.name.stringify}} == name
-      {% end %}
+    private def fetch_verb
+      @request.match(/(^\w+)/).try do |m|
+        m[1].downcase
+      end
     end
   end
 end

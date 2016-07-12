@@ -1,12 +1,13 @@
 require "zlib"
-require "./format.cr"
 require "./row.cr"
 
 module ApacheLogParser
   struct LogFile
     VALID_EXTENSIONS = %w(.gz)
 
-    class InvalidFormatError < TypeCastError; end
+    DEFAULT_REGEX = /(?<host>(?:[0-9]{1,3}\.){3}[0-9]{1,3}) (?<logname>\w+|-) (?<user>\w+|-) \[(?<time>.+)\] "(?<request>.+?|.?)" (?<status>\b\d{3}\b) (?<bytes>\w+|-) "(?<referer>.+?|.?)" "(?<user_agent>.+?|.?)" "(?<true_client_ip>(?:[0-9]{1,3}\.){3}[0-9]{1,3}|-)"/
+
+    class InvalidFormatError < ArgumentError; end
     
     def self.ext_pattern
       String.build do |str|
@@ -16,7 +17,7 @@ module ApacheLogParser
       end
     end
 
-    def initialize(@src : String, @regex : Regex)
+    def initialize(@src : String, @regex = DEFAULT_REGEX)
     end
 
     def name

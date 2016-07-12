@@ -3,21 +3,18 @@ require "./apache_log_parser/*"
 
 module ApacheLogParser
   class Main
-    FORMAT = %(%h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-Agent}i" "%{True-Client-IP}i")
-
     @from : String?
     @to : String?
 
     def initialize
       @filters = [] of Filters::Base
       @src = "./"
-      @format = Format.new(FORMAT)
     end
 
     def call
       setup
       return if @filters.empty?
-      Scanner.new(@src, @filters, @format.regex).call(STDOUT)
+      Scanner.new(@src, @filters).call(STDOUT)
     end
 
     private def setup
