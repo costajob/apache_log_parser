@@ -29,7 +29,7 @@ describe ApacheLogParser::Filters do
     end
 
     it "should match row by HTTP status" do
-      filter = ApacheLogParser::Filters::Verb.new("post")
+      filter = ApacheLogParser::Filters::Verb.new("head")
       filter.matches?(Stubs.rows[1])
     end
   end

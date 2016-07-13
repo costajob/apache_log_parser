@@ -8,7 +8,6 @@ module ApacheLogParser
 
     def initialize(@name : String,
                    @hits_by_status = Hash(String, Int32).new { |h,k| h[k] = 0 },
-                   @hits_by_verb = Hash(String, Int32).new { |h,k| h[k] = 0 },
                    @hits_by_hour = Hash(String, Int32).new { |h,k| h[k] = 0 },
                    @hits_by_ip = Hash(String, Int32).new { |h,k| h[k] = 0 })
     end
@@ -17,7 +16,6 @@ module ApacheLogParser
       collect_hits(rows)
       io.puts title(rows.size)
       io.puts hits(title: "HTTP STATUS", data: @hits_by_status, sort: true)
-      io.puts hits(title: "HTTP VERB", data: @hits_by_verb, sort: true)
       io.puts hits(title: "HOUR", data: @hits_by_hour)
       io.puts hits(title: "TRUE IP", data: @hits_by_ip, limit: 10, sort: true)
     end
@@ -25,7 +23,6 @@ module ApacheLogParser
     private def collect_hits(rows)
       rows.each do |row|
         @hits_by_status[row.status] += 1
-        @hits_by_verb[row.verb] += 1
         @hits_by_hour[row.time.to_s(HOUR_FORMAT)] += 1
         @hits_by_ip[row.true_client_ip] += 1
       end

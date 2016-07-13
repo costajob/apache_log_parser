@@ -1,4 +1,5 @@
 require "option_parser"
+require "colorize"
 require "./apache_log_parser/*"
 
 module ApacheLogParser
@@ -19,7 +20,10 @@ module ApacheLogParser
 
     private def setup
       OptionParser.parse! do |parser|
-        parser.banner = "Usage: ./apache_log_parser -s /logs -f 2016-06-30-00:00:00+0100 -t 2016-07-04-00:00:00+0100 -v get -c 200"
+        parser.banner = String.build do |str|
+          str << "Usage: "
+          str << "./apache_log_parser -s /logs -f 2016-06-30-00:00:00+0100 -t 2016-07-04-00:00:00+0100 -v get -c 200".colorize(:light_gray).bold
+        end
 
         parser.on("-s SRC", "--src=SRC", "Specify log files path (default to CWD)") do |src| 
           @src = src

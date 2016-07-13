@@ -50,11 +50,17 @@ module ApacheLogParser
       end
 
       def matches?(row)
-        @verb == row.verb
+        @verb == fetch_verb(row)
       end
 
       private def check_verb
         raise InvalidVerbError.new("#{@verb} is not supported") unless VERBS.includes?(@verb)
+      end
+
+      private def fetch_verb(row)
+        row.request.match(/^(#{VERBS.join("|")})/i).try do |m|
+          m[1].downcase
+        end
       end
     end
   end
