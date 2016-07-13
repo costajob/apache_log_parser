@@ -42,18 +42,17 @@ You can filter logs data by specifying the source path (default to cwd), filteri
 ``` 
 
 ## Performance
-I tested this library with a compressed Apache log of 130MB, by applying different filters and a combination of them all.  
-I measured execution time by prepending the command with the *time* function.  
-Memory consumption was recorded via Xcode's Instruments.
+I tested this library with a compressed Apache log of 126MB (about 1.6GB uncompressed), by applying different filters and a combination of them all.  
+I measured execution time by using standard *time* function; memory consumption was recorded via Xcode's Instruments.
 
 ### Platform
 The following benchmarks was measured on a MacBook PRO 15 late 2011, 4CPUs, 8GB RAM.
 
 ### Results
 
-|  Applied filter        | Execution Time     |   RAM Peak (GB) |
-| :----------------------| -----------------: |---------------: |
-| time range             |         3m13.851s  |           1.22  |
-| http code              |         3m13.851s  |           1.22  |
-| http verb              |         3m13.851s  |           1.22  |
-| all combined           |         3m13.851s  |           1.22  |
+|  Applied filter/s      | Total results      | Execution time     |   RAM peak (MB) |
+| :--------------------- | -----------------: | -----------------: |---------------: |
+| time range             |           2171918  |         2m40.617s  |         601.63  |
+| http code              |           3350722  |         2m44.237s  |        1080.00  |
+| http verb              |           4971230  |         3m12.189s  |        1350.00  |
+| all combined           |           1372349  |         2m55.272s  |         393.01  |
