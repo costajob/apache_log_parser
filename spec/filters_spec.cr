@@ -9,15 +9,23 @@ describe ApacheLogParser::Filters do
     end
 
     it "should match row by time range" do
-      filter = ApacheLogParser::Filters::TimeRange.new(from: "2016-02-02-11:23:01+0100", to: "2016-02-02-11:33:01+0100")
-      filter.matches?(Stubs.rows[0])
+      filter = ApacheLogParser::Filters::TimeRange.new(from: "2016-02-02-11:23:00+0200", to: "2016-02-02-11:33:01+0200")
+      filter.matches?(Stubs.rows[0]).should be_true
     end
   end
 
   context ApacheLogParser::Filters::Status do
     it "should match row by HTTP status" do
       filter = ApacheLogParser::Filters::Status.new("201")
-      filter.matches?(Stubs.rows[0])
+      filter.matches?(Stubs.rows[0]).should be_true
+    end
+  end
+
+  context ApacheLogParser::Filters::Keyword do
+    it "should match row by keyword" do
+      filter = ApacheLogParser::Filters::Keyword.new("healthcheck")
+      filter.matches?(Stubs.rows[0]).should be_falsey
+      filter.matches?(Stubs.rows[1]).should be_truthy
     end
   end
 
@@ -30,7 +38,7 @@ describe ApacheLogParser::Filters do
 
     it "should match row by HTTP status" do
       filter = ApacheLogParser::Filters::Verb.new("head")
-      filter.matches?(Stubs.rows[1])
+      filter.matches?(Stubs.rows[1]).should be_true
     end
   end
 end

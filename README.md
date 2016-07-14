@@ -35,10 +35,10 @@ Once compiled, you can check program help by typing:
 ```
 
 ### Filters
-You can filter logs data by specifying the source path (default to cwd), filtering by HTTP code, verb and time range:
+You can filter logs data by specifying the source path (default to cwd), filtering by HTTP code, verb, keyword (on HTTP request) and time range:
 
 ```
-./apache_log_parser --src=/usr/local/apache/logs/older --from=2016-07-03-04:10:13+0100 --to=2016-07-03-05:33:01+0100 --code=500 --verb=head
+./apache_log_parser --src=/usr/local/apache/logs/older --from=2016-07-03-04:10:13+0100 --to=2016-07-03-05:33:01+0100 --code=500 --keyword=send_mail --verb=head
 ``` 
 
 ## Performance
@@ -52,6 +52,7 @@ The following benchmarks was measured on a MacBook PRO 15 late 2011, 4CPUs, 8GB 
 
 |  Applied filter/s      | Total results      | Execution time     |   RAM peak (MB) |
 | :--------------------- | -----------------: | -----------------: |---------------: |
+| keyword                |            418551  |         3m12.960s  |         118.75  |
 | time range             |           2171918  |         2m40.617s  |         601.63  |
 | http code              |           3350722  |         2m44.237s  |        1080.00  |
 | http verb              |           4971230  |         3m12.189s  |        1350.00  |

@@ -27,7 +27,8 @@ describe ApacheLogParser::Scanner do
     filters << ApacheLogParser::Filters::TimeRange.new(from: "2016-07-03-04:56:22+0200", to: "2016-07-03-04:56:27+0200")
     filters << ApacheLogParser::Filters::Status.new("304")
     filters << ApacheLogParser::Filters::Verb.new("get")
+    filters << ApacheLogParser::Filters::Keyword.new("jpg")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
-    scanner.call.should eq [10]
+    scanner.call.should eq [9]
   end
 end

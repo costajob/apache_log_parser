@@ -22,7 +22,7 @@ module ApacheLogParser
       OptionParser.parse! do |parser|
         parser.banner = String.build do |str|
           str << "Usage: "
-          str << "./apache_log_parser -s /logs -f 2016-06-30-00:00:00+0100 -t 2016-07-04-00:00:00+0100 -v get -c 200".colorize(:light_gray).bold
+          str << "./apache_log_parser -s /logs -f 2016-06-30-00:00:00+0100 -t 2016-07-04-00:00:00+0100 -c 200 -k send_mail -v get".colorize(:light_gray).bold
         end
 
         parser.on("-s SRC", "--src=SRC", "Specify log files path (default to CWD)") do |src| 
@@ -39,6 +39,10 @@ module ApacheLogParser
 
         parser.on("-c CODE", "--code=CODE", "Filter by HTTP code") do |code|
           @filters << Filters::Status.new(code)
+        end
+
+        parser.on("-k KEYWORD", "--keyword=KEYWORD", "Filter HTTP request by keyword") do |keyword|
+          @filters << Filters::Keyword.new(keyword)
         end
 
         parser.on("-v VERB", "--verb=VERB", "Filter by HTTP verb") do |verb|

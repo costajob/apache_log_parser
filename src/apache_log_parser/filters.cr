@@ -40,6 +40,15 @@ module ApacheLogParser
       end
     end
 
+    struct Keyword < Base
+      def initialize(@keyword : String)
+      end
+
+      def matches?(row)
+        row.request.match(/#{@keyword}/i)
+      end
+    end
+
     struct Verb < Base
       VERBS = %w[get post put delete head options]
 
@@ -54,7 +63,7 @@ module ApacheLogParser
       end
 
       private def check_verb
-        raise InvalidVerbError.new("#{@verb} is not supported") unless VERBS.includes?(@verb)
+        raise InvalidVerbError.new("#{@verb} is not supported, use one of these: #{VERBS.join(", ")}") unless VERBS.includes?(@verb)
       end
 
       private def fetch_verb(row)
