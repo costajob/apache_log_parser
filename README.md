@@ -35,7 +35,7 @@ Once compiled, you can check program help by typing:
 You can filter logs data by specifying the source path (default to cwd), filtering by HTTP code, verb, keyword (on HTTP request) and time range:
 
 ```
-./apache_log_parser --src=/usr/local/apache/logs/older --from=2016-07-03-04:10:13+0100 --to=2016-07-03-05:33:01+0100 --code=500 --keyword=send_email --verb=head
+./apache_log_parser --src=/usr/local/apache/logs/older --from=2016-07-03T04:10:13+0100 --to=2016-07-03T05:33:01+0100 --code=500 --keyword=send_email --verb=head
 ``` 
 
 ## Performance
