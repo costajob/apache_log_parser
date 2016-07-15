@@ -22,7 +22,7 @@ module ApacheLogParser
       OptionParser.parse! do |parser|
         parser.banner = String.build do |str|
           str << "Usage: "
-          str << "./apache_log_parser -s /logs -f 2016-06-30-00:00:00+0100 -t 2016-07-04-00:00:00+0100 -c 200 -k send_mail -v get".colorize(:light_gray).bold
+          str << "./apache_log_parser -s /logs -f 2016-06-30T00:00:00+0100 -t 2016-07-04T00:00:00+0100 -c 200 -k send_mail -v get".colorize(:light_gray).bold
         end
 
         parser.on("-s SRC", "--src=SRC", "Specify log files path (default to CWD)") do |src| 
