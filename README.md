@@ -8,11 +8,8 @@
   * [Platform](#platform)
   * [Results](#results)
 
-# apache_log_parser
-This is a Crystal porting of the original [GO library](https://github.com/costajob/apache-log-parser).
-
 ## Scope
-Please refer to the GO version for more information.
+This is a Crystal porting of the original [GO library](https://github.com/costajob/apache-log-parser).
 
 ## Enhancements
 Using Crystal leads me to a more extensible code base by:
