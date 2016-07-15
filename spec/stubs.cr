@@ -12,7 +12,7 @@ module Stubs
 
   def rows
     19.times.reduce([] of Row) do |rows, i|
-      rows << Row.new(Time.new(2016, 2, 2, 11, 23 + i, 1), 
+      rows << Row.new(Time.new(2016, 2, 2, 11, 23 + i, 1, 0, Time::Kind::Utc), 
                       i.even? ? "GET / HTTP/1.1" : "HEAD /healthcheck.html HTTP/1.0",
                       i.even? ? "201" : "301",
                       i.even? ? "211.157.178.224" : "-")

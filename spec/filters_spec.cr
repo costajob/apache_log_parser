@@ -9,7 +9,7 @@ describe ApacheLogParser::Filters do
     end
 
     it "should match row by time range" do
-      filter = ApacheLogParser::Filters::TimeRange.new(from: "2016-02-02-11:23:00+0200", to: "2016-02-02-11:33:01+0200")
+      filter = ApacheLogParser::Filters::TimeRange.new(from: "2016-02-02-11:23:00+0000", to: "2016-02-02-11:33:01+0000")
       filter.matches?(Stubs.rows[0]).should be_true
     end
   end
