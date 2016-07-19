@@ -49,8 +49,8 @@ The following benchmarks was measured on a MacBook PRO 15 late 2011, 4CPUs, 8GB 
 
 |  Applied filter/s      | Total results      | Execution time     |   RAM peak (MB) |
 | :--------------------- | -----------------: | -----------------: |---------------: |
-| keyword                |            418551  |         3m10.025s  |         118.45  |
-| time range             |           2368069  |         3m13.552s  |         627.03  |
-| http code              |           3571459  |         3m03.405s  |        1130.00  |
-| http verb              |            516033  |         3m20.143s  |         126.06  |
-| all combined           |            412701  |         3m19.153s  |         118.48  |
+| time range             |           2368069  |         3m14.466s  |         627.02  |
+| http code              |           2160609  |         2m56.827s  |         550.16  |
+| http verb              |            516033  |         3m16.627s  |         133.97  |
+| keyword                |            418551  |         3m05.673s  |         118.76  |
+| all combined           |            412701  |         3m10.865s  |         118.79  |
