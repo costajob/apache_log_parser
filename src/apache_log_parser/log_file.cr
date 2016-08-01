@@ -5,7 +5,7 @@ module ApacheLogParser
   struct LogFile
     VALID_EXTENSIONS = %w(.gz)
 
-    DEFAULT_REGEX = /\[(?<time>\d{2}\/\w{3}\/\d{4}:\d{2}:\d{2}:\d{2} \+\d{4})\] "(?<request>.+)" (?<status>\d{3}) .+"(?<true_client_ip>(?:[0-9]{1,3}\.){3}[0-9]{1,3}|-)"/
+    DEFAULT_REGEX = /\[(?<time>\d{2}\/\w{3}\/\d{4}:\d{2}:\d{2}:\d{2} [\+|-]\d{4})\] "(?<request>.+)" (?<status>\d{3}) .+"(?<true_client_ip>(?:[0-9]{1,3}\.){3}[0-9]{1,3}|-)"/
 
     class InvalidFormatError < ArgumentError; end
     

@@ -12,7 +12,7 @@ describe ApacheLogParser::Scanner do
     filters = [] of ApacheLogParser::Filters::Base
     filters << ApacheLogParser::Filters::Status.new("200")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
-    scanner.call.should eq [9]
+    scanner.call.should eq [10]
   end
 
   it "should collect results by HTTP verb filter" do

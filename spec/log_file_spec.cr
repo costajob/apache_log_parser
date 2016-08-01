@@ -18,7 +18,7 @@ describe ApacheLogParser::LogFile do
     log_file.each_row do |row|
       rows << row
     end
-    rows.size.should eq 29
+    rows.size.should eq 30
     rows[25].true_client_ip.should eq "113.148.153.130"
   end
 end
