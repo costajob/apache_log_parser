@@ -7,7 +7,7 @@ module ApacheLogParser
     def initialize(@path : String, @filters : Array(Filters::Base))
     end
 
-    def call(output = MemoryIO.new)
+    def call(output = IO::Memory.new)
       log_files.map do |log_file|
         filtered = [] of Row
         log_file.each_row do |row|

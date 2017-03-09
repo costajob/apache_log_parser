@@ -1,4 +1,4 @@
-require "zlib"
+require "gzip"
 require "./row.cr"
 
 module ApacheLogParser
@@ -26,7 +26,7 @@ module ApacheLogParser
 
     def each_row
       File.open(@src, "r") do |src|
-        Zlib::Inflate.gzip(src) do |gz|
+        Gzip::Reader.open(src) do |gz|
           gz.each_line do |line|
             data = line.match(@regex)
             raise InvalidFormatError.new("Invalid log file line format: #{line}") unless data
