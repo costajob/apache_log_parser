@@ -41,11 +41,11 @@ module ApacheLogParser
           @filters << Filters::Status.new(code)
         end
 
-        parser.on("-k KEYWORD", "--keyword=KEYWORD", "Filter HTTP request by keyword regex") do |keyword|
-          @filters << Filters::Keyword.new(keyword)
+        parser.on("-r REQUEST", "--request=REQUEST", "Filter HTTP request by regex") do |request|
+          @filters << Filters::Request.new(request)
         end
 
-        parser.on("-a AGENT", "--agent=AGENT", "Filter HTTP request by user agent regex") do |agent|
+        parser.on("-a AGENT", "--agent=AGENT", "Filter user agent by regex") do |agent|
           @filters << Filters::UserAgent.new(agent)
         end
 

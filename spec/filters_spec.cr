@@ -22,9 +22,9 @@ describe ApacheLogParser::Filters do
     end
   end
 
-  context ApacheLogParser::Filters::Keyword do
+  context ApacheLogParser::Filters::Request do
     it "should match row by keyword" do
-      filter = ApacheLogParser::Filters::Keyword.new("healthcheck")
+      filter = ApacheLogParser::Filters::Request.new("healthcheck")
       filter.matches?(Stubs.rows[0]).should be_falsey
       filter.matches?(Stubs.rows[1]).should be_truthy
     end

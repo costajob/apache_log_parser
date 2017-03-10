@@ -40,13 +40,13 @@ module ApacheLogParser
       end
     end
 
-    struct Keyword < Base
-      def initialize(keyword : String)
-        @keyword = /#{keyword}/i
+    struct Request < Base
+      def initialize(request : String)
+        @request = /#{request}/i
       end
 
       def matches?(row)
-        row.request.match(@keyword)
+        row.request.match(@request)
       end
     end
 
