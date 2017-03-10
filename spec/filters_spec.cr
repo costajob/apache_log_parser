@@ -1,3 +1,4 @@
+require "benchmark"
 require "./spec_helper.cr"
 
 describe ApacheLogParser::Filters do
@@ -36,6 +37,7 @@ describe ApacheLogParser::Filters do
       filter.matches?(Stubs.rows[1]).should be_falsey
     end
   end
+
   context ApacheLogParser::Filters::Verb do
     it "should raise an error for invalid verb" do
       expect_raises(ApacheLogParser::Filters::Verb::InvalidVerbError) do

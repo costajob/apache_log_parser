@@ -41,25 +41,28 @@ module ApacheLogParser
     end
 
     struct Keyword < Base
-      def initialize(@keyword : String)
+      def initialize(keyword : String)
+        @keyword = /#{keyword}/i
       end
 
       def matches?(row)
-        row.request.match(/#{@keyword}/i)
+        row.request.match(@keyword)
       end
     end
 
     struct UserAgent < Base
-      def initialize(@user_agent : String)
+      def initialize(user_agent : String)
+        @user_agent = /#{user_agent}/i
       end
 
       def matches?(row)
-        row.user_agent.match(/#{@user_agent}/i)
+        row.user_agent.match(@user_agent)
       end
     end
 
     struct Verb < Base
       VERBS = %w[get post put delete head options]
+      VERBS_REGEX = /^(#{VERBS.join("|")})/i
 
       class InvalidVerbError < ArgumentError; end
 
@@ -76,9 +79,7 @@ module ApacheLogParser
       end
 
       private def fetch_verb(row)
-        row.request.match(/^(#{VERBS.join("|")})/i).try do |m|
-          m[1].downcase
-        end
+        row.request.match(VERBS_REGEX).try { |m| m[1].downcase }
       end
     end
   end
