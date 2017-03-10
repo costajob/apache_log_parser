@@ -13,6 +13,7 @@ module ApacheLogParser
     end
 
     def render(rows, io : IO)
+      return if rows.empty?
       collect_hits(rows)
       io.puts title(rows.size)
       io.puts hits(title: "HTTP STATUS", data: @hits_by_status, sort: true)
