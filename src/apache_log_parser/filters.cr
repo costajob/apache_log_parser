@@ -5,7 +5,7 @@ module ApacheLogParser
     end
 
     struct TimeRange < Base
-      TIME_FORMAT = "%FT%T%z"
+      TIME_FORMAT = ENV.fetch("TIME_FORMAT") { "%FT%T%z" }
 
       class InvalidTimeRangeError < Exception; end
 
@@ -46,6 +46,15 @@ module ApacheLogParser
 
       def matches?(row)
         row.request.match(/#{@keyword}/i)
+      end
+    end
+
+    struct UserAgent < Base
+      def initialize(@user_agent : String)
+      end
+
+      def matches?(row)
+        row.user_agent.match(/#{@user_agent}/i)
       end
     end
 

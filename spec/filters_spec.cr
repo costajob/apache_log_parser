@@ -29,6 +29,13 @@ describe ApacheLogParser::Filters do
     end
   end
 
+  context ApacheLogParser::Filters::UserAgent do
+    it "should match row by user agent" do
+      filter = ApacheLogParser::Filters::UserAgent.new("iphone")
+      filter.matches?(Stubs.rows[0]).should be_truthy
+      filter.matches?(Stubs.rows[1]).should be_falsey
+    end
+  end
   context ApacheLogParser::Filters::Verb do
     it "should raise an error for invalid verb" do
       expect_raises(ApacheLogParser::Filters::Verb::InvalidVerbError) do

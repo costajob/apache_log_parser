@@ -5,21 +5,35 @@ describe ApacheLogParser::Scanner do
     filters = [] of ApacheLogParser::Filters::Base
     filters << ApacheLogParser::Filters::TimeRange.new(from: "2016-07-03T04:56:24+0200", to: "2016-07-03T04:56:25+0200")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
-    scanner.call.should eq [7]
+    scanner.call.should eq [7,0]
   end
 
   it "should collect results by HTTP status filter" do
     filters = [] of ApacheLogParser::Filters::Base
     filters << ApacheLogParser::Filters::Status.new("200")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
-    scanner.call.should eq [10]
+    scanner.call.should eq [10,3]
   end
 
   it "should collect results by HTTP verb filter" do
     filters = [] of ApacheLogParser::Filters::Base
     filters << ApacheLogParser::Filters::Verb.new("head")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
-    scanner.call.should eq [1]
+    scanner.call.should eq [1,0]
+  end
+
+  it "should collect results by keyword filter" do
+    filters = [] of ApacheLogParser::Filters::Base
+    filters << ApacheLogParser::Filters::Keyword.new("jpg")
+    scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
+    scanner.call.should eq [16,0]
+  end
+
+  it "should collect results by user agent filter" do
+    filters = [] of ApacheLogParser::Filters::Base
+    filters << ApacheLogParser::Filters::UserAgent.new("iphone")
+    scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
+    scanner.call.should eq [9,3]
   end
 
   it "should collect results by combining filters" do
@@ -28,7 +42,8 @@ describe ApacheLogParser::Scanner do
     filters << ApacheLogParser::Filters::Status.new("304")
     filters << ApacheLogParser::Filters::Verb.new("get")
     filters << ApacheLogParser::Filters::Keyword.new("jpg")
+    filters << ApacheLogParser::Filters::UserAgent.new("iphone")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
-    scanner.call.should eq [9]
+    scanner.call.should eq [6,0]
   end
 end
