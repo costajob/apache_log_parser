@@ -47,6 +47,7 @@ module ApacheLogParser
     end
 
     private def hits(title, data, limit, sort = false)
+      return if skip_header?(data)
       String.build do |str|
         str << header(title)
         normalize_data(data, sort).each_with_index do |row, i|
@@ -61,6 +62,10 @@ module ApacheLogParser
       data = data.to_a
       data.sort! { |x, y| y[1] <=> x[1] } if sort
       data
+    end
+
+    private def skip_header?(data)
+      data.size == 1 && data.keys.includes?("-")
     end
   end
 end
