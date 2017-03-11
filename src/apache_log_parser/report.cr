@@ -5,6 +5,7 @@ module ApacheLogParser
   class Report
     HOUR_FORMAT = "%F %Hh"
     HR = "-" * 25
+    LIMIT = ENV.fetch("LIMIT") { "-1" }
 
     def initialize(@name : String,
                    @hits_by_status = Hash(String, Int32).new { |h,k| h[k] = 0 },
@@ -16,9 +17,9 @@ module ApacheLogParser
       return if rows.empty?
       collect_hits(rows)
       io.puts title(rows.size)
-      io.puts hits(title: "HTTP STATUS", data: @hits_by_status, sort: true)
-      io.puts hits(title: "HOUR", data: @hits_by_hour)
-      io.puts hits(title: "TRUE IP", data: @hits_by_ip, limit: 10, sort: true)
+      io.puts hits(title: "HTTP STATUS", data: @hits_by_status, limit: -1, sort: true)
+      io.puts hits(title: "HOUR", data: @hits_by_hour, limit: -1)
+      io.puts hits(title: "TRUE IP", data: @hits_by_ip, limit: LIMIT.to_i32, sort: true)
     end
 
     private def collect_hits(rows)
@@ -45,7 +46,7 @@ module ApacheLogParser
       end
     end
 
-    private def hits(title, data, limit = 100, sort = false)
+    private def hits(title, data, limit, sort = false)
       String.build do |str|
         str << header(title)
         normalize_data(data, sort).each_with_index do |row, i|

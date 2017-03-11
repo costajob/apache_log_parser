@@ -43,6 +43,12 @@ You can filter logs data by specifying the source path (default to cwd) and comb
 ./apache_log_parser -src=/usr/local/apache/logs/older --from=2016-07-03T04:10:13+0100 --to=2016-07-03T05:33:01+0100 --code=500 --request=send_email --agent=iphone --verb=head
 ``` 
 
+#### True IP
+Since the list of True IPs could be large you can limit the number of IPs to output by using an environment variable:
+```
+LIMIT=10 ./apache_log_parser -src=/usr/local/apache/logs/older --code=304
+``` 
+
 ## Performance
 I tested this library with a compressed Apache log of 126MB (about 1.6GB uncompressed), by applying different filters and a combination of them all.  
 I measured execution time by using standard *time* function; memory consumption was recorded via Xcode's Instruments.
