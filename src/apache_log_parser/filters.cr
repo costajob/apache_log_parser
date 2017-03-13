@@ -32,8 +32,7 @@ module ApacheLogParser
     end
 
     struct Status < Base
-      def initialize(@status : String)
-      end
+      def initialize(@status : String); end
 
       def matches?(row)
         @status == row.status

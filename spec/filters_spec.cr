@@ -1,4 +1,3 @@
-require "benchmark"
 require "./spec_helper.cr"
 
 describe ApacheLogParser::Filters do

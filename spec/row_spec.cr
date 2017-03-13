@@ -15,8 +15,8 @@ describe ApacheLogParser::Row do
     row = ApacheLogParser::Row.new({"noent" => "true"})
     row.should be_a ApacheLogParser::Row
     row.time.epoch.should eq 0
-    row.request.should eq "-"
-    row.status.should eq "-"
-    row.true_client_ip.should eq "-"
+    row.request.should eq ""
+    row.status.should eq ""
+    row.true_client_ip.should eq ""
   end
 end

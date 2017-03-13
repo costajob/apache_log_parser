@@ -4,7 +4,9 @@ require "./row.cr"
 module ApacheLogParser
   class Report
     HOUR_FORMAT = "%F %Hh"
-    HR = "-" * 25
+    DATA_WIDTH = 30
+    HITS_WIDTH = 10
+    HR = "-" * (DATA_WIDTH + HITS_WIDTH)
     LIMIT = ENV.fetch("LIMIT") { "-1" }
 
     def initialize(@name : String,
@@ -13,13 +15,13 @@ module ApacheLogParser
                    @hits_by_ip = Hash(String, Int32).new { |h,k| h[k] = 0 })
     end
 
-    def render(rows, io : IO)
+    def render(rows, io : IO, limit = LIMIT)
       return if rows.empty?
       collect_hits(rows)
       io.puts title(rows.size)
       io.puts hits(title: "HTTP STATUS", data: @hits_by_status, limit: -1, sort: true)
       io.puts hits(title: "HOUR", data: @hits_by_hour, limit: -1)
-      io.puts hits(title: "TRUE IP", data: @hits_by_ip, limit: LIMIT.to_i32, sort: true)
+      io.puts hits(title: "TRUE IP", data: @hits_by_ip, limit: limit.to_i32, sort: true)
     end
 
     private def collect_hits(rows)
@@ -31,28 +33,29 @@ module ApacheLogParser
     end
 
     private def title(n)
+      ("\n%-#{DATA_WIDTH}s %-#{HITS_WIDTH}\d\n" % [@name, n]).colorize(:yellow).bold
+    end
+
+    private def header(title, limit)
       String.build do |str|
-        str << ("\n%-17s %-7\d\n" % [@name, n]).colorize(:yellow).bold
+        str << ("\n%-#{DATA_WIDTH}s %-#{HITS_WIDTH}s\n" % ["#{title}#{limit_str(limit)}", "HITS"]).colorize(:light_gray).bold
         str << HR
         str << "\n"
       end
     end
 
-    private def header(title)
-      String.build do |str|
-        str << ("\n%-17s %-7s\n" % [title, "HITS"]).colorize(:light_gray).bold
-        str << HR
-        str << "\n"
-      end
+    private def limit_str(limit)
+      return "" if limit < 0
+      " (top #{limit})"
     end
 
     private def hits(title, data, limit, sort = false)
       return if skip_header?(data)
       String.build do |str|
-        str << header(title)
+        str << header(title, limit)
         normalize_data(data, sort).each_with_index do |row, i|
           break if i == limit
-          str << "%-17s %d\n" % [row[0], row[1]]
+          str << "%-#{DATA_WIDTH}s %d\n" % [row[0], row[1]]
         end
       end
     end
