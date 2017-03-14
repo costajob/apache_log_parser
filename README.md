@@ -96,7 +96,7 @@ HIGHLIGHT=200000 ./apache_log_parser --src samples/
 ### Filters
 You can refine results by combining different filters:
 * time range (i.e. 2016-06-30T00:00:00+0100)
-* HTTP code
+* HTTP code by regex
 * HTTP verb (get, post, put, delete, head, options)
 * HTTP request by regex
 * user agent by regex
@@ -120,9 +120,9 @@ REGEX="^(?<true_client_ip>(?:[0-9]{1,3}\.){3}[0-9]{1,3}|-)" ./apache_log_parser
 ./apache_log_parser -src=<path_to_gz_logs> --agent="[spring|google]bot"
 ``` 
 
-#### Detect crashes
+#### Detect errors
 ```shell
-./apache_log_parser -src=<path_to_gz_logs> --code=500 
+./apache_log_parser -src=<path_to_gz_logs> --code=50*
 ```
 
 #### Check specific time window

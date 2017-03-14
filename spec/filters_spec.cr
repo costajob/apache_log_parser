@@ -17,7 +17,7 @@ describe ApacheLogParser::Filters do
   context ApacheLogParser::Filters::Status do
     it "should match row by HTTP status" do
       filter = ApacheLogParser::Filters::Status.new("201")
-      filter.matches?(Stubs.rows[0]).should be_true
+      filter.matches?(Stubs.rows[0]).should be_truthy
     end
   end
 
