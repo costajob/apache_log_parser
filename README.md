@@ -23,7 +23,7 @@ Some alternatives exists:
 
 ## Log format
 The assumed log format is the following:
-````log
+```log
 23.63.227.241 - - [03/Jul/2016:03:56:21 +0100] "GET / HTTP/1.1" 302 94 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko" "192.40.202.240"
 ```
 Consider you can modify the regex used to capture log file data by using an [environment variable](#custom-regex).
@@ -38,14 +38,13 @@ The following fields are captured from each line by using a named-group regex:
 
 ## Usage
 Compile the main file to get the CLI program:
-
-```
+```shell
 crystal build --release src/apache_log_parser.cr
 ```
 
 ### Help
 Once compiled, you can check program help by typing:
-```
+```shell
 ./apache_log_parser -h
 Usage: ./apache_log_parser -s /logs -f 2016-06-30T00:00:00+0100 -t 2016-07-04T00:00:00+0100 -c 200 -k send_mail -a iphone -v get
     -s SRC, --src=SRC                Specify log files path [cwd]
