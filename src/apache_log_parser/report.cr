@@ -8,11 +8,16 @@ module ApacheLogParser
     HITS_WIDTH = 10
     HR = "-" * (DATA_WIDTH + HITS_WIDTH)
     LIMIT = ENV.fetch("LIMIT") { "-1" }
+    HIGHLIGHT = ENV.fetch("HIGHLIGHT") { "200000" }
+
+    @highlight : Int32
 
     def initialize(@name : String,
+                   highlight = HIGHLIGHT,
                    @hits_by_status = Hash(String, Int32).new { |h,k| h[k] = 0 },
                    @hits_by_hour = Hash(String, Int32).new { |h,k| h[k] = 0 },
                    @hits_by_ip = Hash(String, Int32).new { |h,k| h[k] = 0 })
+      @highlight = highlight.to_i
     end
 
     def render(rows, io : IO, limit = LIMIT)
@@ -55,7 +60,7 @@ module ApacheLogParser
         str << header(title, limit)
         normalize_data(data, sort).each_with_index do |row, i|
           break if i == limit
-          str << "%-#{DATA_WIDTH}s %d\n" % [row[0], row[1]]
+          str << "%-#{DATA_WIDTH}s %s\n" % [row[0], highlight(row[1])]
         end
       end
     end
@@ -69,6 +74,11 @@ module ApacheLogParser
 
     private def skip_header?(data)
       data.size == 1 && data.keys.includes?("-")
+    end
+
+    private def highlight(hits)
+      return hits.to_s if hits < @highlight
+      hits.to_s.colorize(:red).bold
     end
   end
 end

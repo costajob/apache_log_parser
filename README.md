@@ -88,6 +88,12 @@ TRUE IP                        HITS
 59.173.177.227                 1
 ```
 
+#### Highlight output
+Depending on the standard traffic of your server, you could want to highlight the results that are greater than a specified limit:
+```shell
+HIGHLIGHT=200000 ./apache_log_parser --src samples/
+```
+
 ### Filters
 You can refine results by combining different filters:
 * time range (i.e. 2016-06-30T00:00:00+0100)
@@ -98,7 +104,7 @@ You can refine results by combining different filters:
 
 #### Limit data
 Since the list of true IP could be large you can limit the number printed data by using an environment variable:
-```
+```shell
 LIMIT=10 ./apache_log_parser
 ``` 
 
