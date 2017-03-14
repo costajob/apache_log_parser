@@ -14,7 +14,6 @@ module ApacheLogParser
 
     def call
       setup
-      return if @filters.empty?
       Scanner.new(@src, @filters).call(STDOUT)
     end
 
