@@ -59,16 +59,12 @@ Usage: ./apache_log_parser -s /logs -f 2016-06-30T00:00:00+0100 -t 2016-07-04T00
 
 ### Output
 The CLI library starts scanning file by the specified source path (default to CWD). 
-The results are printed directly to STDOUT, highlighting hits by HTTP status, hour and true IP:
+The results are printed directly to STDOUT, displaying hits distributed on time and by true IP:
 ```shell
 ./apache_log_parser --src samples/
 
 access_log.gz                  17        
 
-
-HTTP STATUS                    HITS      
-----------------------------------------
-304                            17
 
 HOUR                           HITS      
 ----------------------------------------
@@ -134,7 +130,7 @@ You can specify different time zones and they will be observed:
 #### Combining filters
 You can combine available filters for more granular data analysis.
 ```shell
-./apache_log_parser -src=<path_to_gz_logs> --from=2016-07-03T04:10:13+0100 --to=2016-07-03T05:33:01+0100 --code=302 --verb=get --request=images --agent=iphone
+./apache_log_parser -src=<path_to_gz_logs> --from=2016-07-03T04:10:13+0100 --to=2016-07-03T05:33:01+0100 --code=302 --verb=get --request=jpg --agent=iphone
 ```
 
 ## Performance
@@ -148,14 +144,14 @@ The following benchmarks was measured on a MacBook PRO 15 late 2015, 4CPUs, 16GB
 
 |  Applied filter/s      | Total results      | Execution time     |   RAM peak (MB) |
 | :--------------------- | -----------------: | -----------------: |---------------: |
-| no filters             |           3648593  |         2m10.500s  |         698.55  |
-| time range             |           1445855  |          2m8.561s  |         214.00  |
-| HTTP code              |           2967811  |          2m5.633s  |         442.37  |
-| HTTP verb              |           2754608  |         3m25.770s  |         722.08  |
-| request                |            265290  |         3m19.767s  |          96.76  |
-| user agent             |             42638  |         2m34.023s  |          15.75  |
-| all combined           |                 8  |         3m49.067s  |           2.31  |
+| no filters             |           3648593  |          2m0.389s  |         606.06  |
+| time range             |           1519655  |         1m58.682s  |         191.14  |
+| HTTP code              |           3574291  |          2m2.071s  |         706.33  |
+| HTTP verb              |           2754608  |          2m0.596s  |         612.20  |
+| request                |            521490  |          2m0.429s  |         124.77  |
+| user agent             |           1518551  |         2m25.625s  |         454.03  |
+| all combined           |                 4  |         2m31.756s  |           5.23  |
 
 ### Considerations
-Execution time is CPU-bound and remains pretty consistent for the used filters, augmenting when dealing with the regexps on the request and user agent data.  
-RAM consumption strongly depends on the number of fetched data, since each row is consumed into the stack.
+Execution time is CPU-bound and remains pretty consistent no matter the used filters.  
+RAM consumption strongly depends on the number of fetched data, since each row object is kept on the stack.

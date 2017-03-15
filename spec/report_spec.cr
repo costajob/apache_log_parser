@@ -11,11 +11,6 @@ describe ApacheLogParser::Report do
     iter.next.should eq "access.gz                      19        "
     iter.next
     iter.next
-    iter.next.should eq "HTTP STATUS                    HITS      "
-    iter.next.should eq "\e[0m----------------------------------------"
-    iter.next.should eq "201                            10"
-    iter.next.should eq "301                            9"
-    iter.next
     iter.next.should eq "HOUR                           HITS      "
     iter.next.should eq "\e[0m----------------------------------------"
     iter.next.should eq "2016-02-02 11h                 19"
@@ -32,7 +27,7 @@ describe ApacheLogParser::Report do
     report.render(Stubs.rows, io, "3")
     io.rewind
     iter = io.each_line
-    13.times { iter.next }
+    8.times { iter.next }
     iter.next.should eq "TRUE IP (top 3)                HITS      "
   end
 
@@ -43,9 +38,6 @@ describe ApacheLogParser::Report do
     io.rewind
     iter = io.each_line
     6.times { iter.next }
-    iter.next.should eq "201                            \e[31;1m10\e[0m"
-    iter.next.should eq "301                            9"
-    3.times { iter.next }
     iter.next.should eq "2016-02-02 11h                 \e[31;1m19\e[0m"
     3.times { iter.next }
     iter.next.should eq "211.157.178.224                \e[31;1m10\e[0m"
