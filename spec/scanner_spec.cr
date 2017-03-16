@@ -10,9 +10,16 @@ describe ApacheLogParser::Scanner do
 
   it "should collect results by HTTP status filter" do
     filters = [] of ApacheLogParser::Filters::Base
-    filters << ApacheLogParser::Filters::Status.new("200")
+    filters << ApacheLogParser::Filters::Status.new("20*")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
-    scanner.call.should eq [10]
+    scanner.call.should eq [11]
+  end
+
+  it "should collect results by true client IP filter" do
+    filters = [] of ApacheLogParser::Filters::Base
+    filters << ApacheLogParser::Filters::TrueClientIP.new("221.127.193.144")
+    scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
+    scanner.call.should eq [4]
   end
 
   it "should collect results by HTTP verb filter" do

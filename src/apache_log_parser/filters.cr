@@ -1,10 +1,10 @@
 module ApacheLogParser
   module Filters
-    abstract struct Base
+    abstract class Base
       abstract def matches?(row)
     end
 
-    struct TimeRange < Base
+    class TimeRange < Base
       TIME_FORMAT = ENV.fetch("TIME_FORMAT") { "%FT%T%z" }
 
       class InvalidTimeRangeError < Exception; end
@@ -31,7 +31,17 @@ module ApacheLogParser
       end
     end
 
-    struct Status < Base
+    class TrueClientIP < Base
+      def initialize(ip : String)
+        @ip = ip
+      end
+
+      def matches?(row)
+        row.true_client_ip == @ip
+      end
+    end
+
+    class Status < Base
       def initialize(status : String)
         @status = /#{status}/
       end
@@ -41,7 +51,7 @@ module ApacheLogParser
       end
     end
 
-    struct Request < Base
+    class Request < Base
       def initialize(request : String)
         @request = /#{request}/i
       end
@@ -51,7 +61,7 @@ module ApacheLogParser
       end
     end
 
-    struct UserAgent < Base
+    class UserAgent < Base
       def initialize(user_agent : String)
         @user_agent = /#{user_agent}/i
       end
@@ -61,7 +71,7 @@ module ApacheLogParser
       end
     end
 
-    struct Verb < Base
+    class Verb < Base
       VERBS = %w[get post put delete head options]
       VERBS_REGEX = /^(#{VERBS.join("|")})/i
 

@@ -21,6 +21,13 @@ describe ApacheLogParser::Filters do
     end
   end
 
+  context ApacheLogParser::Filters::TrueClientIP do
+    it "should match row by true client IP" do
+      filter = ApacheLogParser::Filters::TrueClientIP.new("211.157.178.224")
+      filter.matches?(Stubs.rows[0]).should be_truthy
+    end
+  end
+
   context ApacheLogParser::Filters::Request do
     it "should match row by keyword" do
       filter = ApacheLogParser::Filters::Request.new("healthcheck")

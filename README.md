@@ -46,11 +46,12 @@ crystal build --release src/apache_log_parser.cr
 Once compiled, you can check program help by typing:
 ```shell
 ./apache_log_parser -h
-Usage: ./apache_log_parser -s /logs -f 2016-06-30T00:00:00+0100 -t 2016-07-04T00:00:00+0100 -c 200 -k send_mail -a iphone -v get
+Usage: ./apache_log_parser -s /logs -f 2016-06-30T00:00:00+0100 -t 2016-07-04T00:00:00+0100 -i 66.249.66.63 -c 20* -k send_mail -a iphone -v get
     -s SRC, --src=SRC                Specify log files path [cwd]
     -f FROM, --from=FROM             Filter requests from this time
     -t TO, --to=TO                   Filter requests until this time
     -c CODE, --code=CODE             Filter by HTTP code
+    -i IP, --ip=IP                   Filter by true client IP
     -r REQUEST, --request=REQUEST    Filter HTTP request by regex
     -a AGENT, --agent=AGENT          Filter user agent by regex
     -v VERB, --verb=VERB             Filter by HTTP verb
@@ -93,6 +94,7 @@ HIGHLIGHT=200000 ./apache_log_parser --src samples/
 You can refine results by combining different filters:
 * time range (i.e. 2016-06-30T00:00:00+0100)
 * HTTP code by regex
+* true client IP
 * HTTP verb (get, post, put, delete, head, options)
 * HTTP request by regex
 * user agent by regex
@@ -130,7 +132,14 @@ You can specify different time zones and they will be observed:
 #### Combining filters
 You can combine available filters for more granular data analysis.
 ```shell
-./apache_log_parser -src=<path_to_gz_logs> --from=2016-07-03T04:10:13+0100 --to=2016-07-03T05:33:01+0100 --code=302 --verb=get --request=jpg --agent=iphone
+./apache_log_parser -src=<path_to_gz_logs> \
+                    --from=2016-07-03T04:10:13+0100 \
+                    --to=2016-07-03T05:33:01+0100 \
+                    --code=302 \
+                    --ip=66.249.66.63 \
+                    --verb=get \
+                    --request=jpg \
+                    --agent=iphone
 ```
 
 ## Performance
@@ -147,6 +156,7 @@ The following benchmarks was measured on a MacBook PRO 15 late 2015, 4CPUs, 16GB
 | no filters             |           3648593  |          2m0.389s  |         606.06  |
 | time range             |           1519655  |         1m58.682s  |         191.14  |
 | HTTP code              |           3574291  |          2m2.071s  |         706.33  |
+| true IP                |           3574291  |          2m2.071s  |         706.33  |
 | HTTP verb              |           2754608  |          2m0.596s  |         612.20  |
 | request                |            521490  |          2m0.429s  |         124.77  |
 | user agent             |           1518551  |         2m25.625s  |         454.03  |
