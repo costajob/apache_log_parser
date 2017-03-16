@@ -24,8 +24,14 @@ module ApacheLogParser
     private def normalize
       ORDERED.clone.tap do |group|
         FILTERS_REGEX_PAIRS.each do |filters, regex|
-          group.delete(regex) unless filters.any? { |filter| @filters.includes?(filter) } 
+          group.delete(regex) unless any_used_filter?(filters)
         end
+      end
+    end
+
+    private def any_used_filter?(filters)
+      filters.any? do |filter|
+        @filters.includes?(filter)
       end
     end
   end
