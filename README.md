@@ -153,10 +153,10 @@ The following benchmarks was measured on a MacBook PRO 15 late 2015, 4CPUs, 16GB
 
 |  Applied filter/s      | Total results      | Execution time     |   RAM peak (MB) |
 | :--------------------- | -----------------: | -----------------: |---------------: |
-| no filters             |           3648593  |          2m0.389s  |         606.06  |
+| no filters             |           3648593  |         1m59.219s  |         606.06  |
 | time range             |           1519655  |         1m58.682s  |         191.14  |
 | HTTP code              |           3574291  |          2m2.071s  |         706.33  |
-| true IP                |           3574291  |          2m2.071s  |         706.33  |
+| true IP                |              9059  |         1m56.502s  |           4.61  |
 | HTTP verb              |           2754608  |          2m0.596s  |         612.20  |
 | request                |            521490  |          2m0.429s  |         124.77  |
 | user agent             |           1518551  |         2m25.625s  |         454.03  |
