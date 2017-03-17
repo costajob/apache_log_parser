@@ -1,16 +1,27 @@
 require "./spec_helper.cr"
 
 describe ApacheLogParser::Filters do
-  context ApacheLogParser::Filters::TimeRange do
-    it "should raise an error for invalid ranges" do
-      expect_raises(ApacheLogParser::Filters::TimeRange::InvalidTimeRangeError) do
-        ApacheLogParser::Filters::TimeRange.new(from: "2016-02-02T11:23:01+0100", to: "2016-02-02T11:13:01+0100")
-      end
+  context ApacheLogParser::Filters::From do
+    it "should match row starting from" do
+      filter = ApacheLogParser::Filters::From.new("2006-02-02T11:23:00+0000")
+      filter.matches?(Stubs.rows[0]).should be_true
     end
 
-    it "should match row by time range" do
-      filter = ApacheLogParser::Filters::TimeRange.new(from: "2016-02-02T11:23:00+0000", to: "2016-02-02T11:33:01+0000")
+    it "should not match future times" do
+      filter = ApacheLogParser::Filters::From.new("2036-02-02T11:23:00+0000")
+      filter.matches?(Stubs.rows[0]).should be_false
+    end
+  end
+
+  context ApacheLogParser::Filters::To do
+    it "should match row ending to" do
+      filter = ApacheLogParser::Filters::To.new("2036-02-02T11:33:01+0000")
       filter.matches?(Stubs.rows[0]).should be_true
+    end
+
+    it "should not match past times" do
+      filter = ApacheLogParser::Filters::To.new("2006-02-02T11:23:00+0000")
+      filter.matches?(Stubs.rows[0]).should be_false
     end
   end
 

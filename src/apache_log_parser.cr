@@ -29,11 +29,11 @@ module ApacheLogParser
         end
         
         parser.on("-f FROM", "--from=FROM", "Filter requests from this time") do |from|
-          @from = from
+          @filters << Filters::From.new(from)
         end
 
         parser.on("-t TO", "--to=TO", "Filter requests until this time") do |to|
-          @to = to
+          @filters << Filters::To.new(to)
         end
 
         parser.on("-c CODE", "--code=CODE", "Filter HTTP code by regex") do |code|
@@ -58,8 +58,6 @@ module ApacheLogParser
 
         parser.on("-h", "--help", "Show this help") { puts parser }
       end
-
-      @filters << Filters::TimeRange.new(@from.as(String), @to.as(String)) if @from && @to
     end
   end
 end

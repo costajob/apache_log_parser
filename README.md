@@ -98,7 +98,8 @@ HIGHLIGHT=200000 apache_log_parser --src=<path_to_gz_logs>
 
 ### Filters
 You can refine results by combining different filters:
-* time range (i.e. 2016-06-30T00:00:00+0100)
+* from time
+* to time
 * HTTP code by regex
 * true client IP
 * HTTP verb (get, post, put, delete, head, options)

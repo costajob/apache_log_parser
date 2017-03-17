@@ -1,11 +1,18 @@
 require "./spec_helper.cr"
 
 describe ApacheLogParser::Scanner do
-  it "should collect results by time range filter" do
+  it "should collect results from time filter" do
     filters = [] of ApacheLogParser::Filters::Base
-    filters << ApacheLogParser::Filters::TimeRange.new(from: "2016-07-03T04:56:24+0200", to: "2016-07-03T04:56:25+0200")
+    filters << ApacheLogParser::Filters::From.new("2016-07-03T04:56:24+0200")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
-    scanner.call(Stubs::Report).should eq [7]
+    scanner.call(Stubs::Report).should eq [24]
+  end
+
+  it "should collect results till time filter" do
+    filters = [] of ApacheLogParser::Filters::Base
+    filters << ApacheLogParser::Filters::To.new("2016-07-03T04:56:25+0200")
+    scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
+    scanner.call(Stubs::Report).should eq [13]
   end
 
   it "should collect results by HTTP status filter" do
@@ -45,7 +52,8 @@ describe ApacheLogParser::Scanner do
 
   it "should collect results by combining filters" do
     filters = [] of ApacheLogParser::Filters::Base
-    filters << ApacheLogParser::Filters::TimeRange.new(from: "2016-07-03T04:56:22+0200", to: "2016-07-03T04:56:27+0200")
+    filters << ApacheLogParser::Filters::From.new("2016-07-03T04:56:22+0200")
+    filters << ApacheLogParser::Filters::To.new("2016-07-03T04:56:27+0200")
     filters << ApacheLogParser::Filters::Status.new("304")
     filters << ApacheLogParser::Filters::Verb.new("get")
     filters << ApacheLogParser::Filters::Request.new("jpg")

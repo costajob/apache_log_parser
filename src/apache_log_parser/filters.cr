@@ -1,33 +1,32 @@
 module ApacheLogParser
   module Filters
     abstract class Base
+      TIME_FORMAT = ENV.fetch("TIME_FORMAT") { "%FT%T%z" }
+
       abstract def matches?(row)
     end
 
-    class TimeRange < Base
-      TIME_FORMAT = ENV.fetch("TIME_FORMAT") { "%FT%T%z" }
-
-      class InvalidTimeRangeError < Exception; end
-
+    class From < Base
       @from : Time
-      @to : Time
 
-      def initialize(from : String, to : String)
-        @from = parse_time(from)
-        @to = parse_time(to)
-        check_time_range
+      def initialize(from : String)
+        @from = Time.parse(from, TIME_FORMAT)
       end
 
       def matches?(row)
-        row.time >= @from && row.time <= @to
+        row.time >= @from
+      end
+    end
+
+    class To < Base
+      @to : Time
+
+      def initialize(to : String)
+        @to = Time.parse(to, TIME_FORMAT)
       end
 
-      private def check_time_range
-        raise InvalidTimeRangeError.new("#{@to} should be after #{@from}") if @to < @from
-      end
-
-      private def parse_time(time)
-        Time.parse(time, TIME_FORMAT)
+      def matches?(row)
+        row.time <= @to
       end
     end
 
