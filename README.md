@@ -38,16 +38,21 @@ The following fields are captured from each line by using a named-group regex:
 * *true_ip*: since most of the applications run behind a CDN, the True IP of the client
 
 ## Usage
-Compile the main file to get the CLI program:
+Isnatll last Crystal version and clone the repository: 
+```shell
+git clone https://github.com/costajob/apache_log_parser.git
+```
+Move into the cloned repository and compile the main file to get the CLI program:
 ```shell
 crystal build --release src/apache_log_parser.cr
 ```
+Move the resulting binary in your PATH.
 
 ### Help
 Once compiled, you can check program help by typing:
 ```shell
-./apache_log_parser -h
-Usage: ./apache_log_parser -s /logs -f 2016-06-30T00:00:00+0100 -t 2016-07-04T00:00:00+0100 -i 66.249.66.63 -c 20* -k send_mail -a iphone -v get
+apache_log_parser -h
+Usage: apache_log_parser -s /logs -f 2016-06-30T00:00:00+0100 -t 2016-07-04T00:00:00+0100 -i 66.249.66.63 -c 20* -k send_mail -a iphone -v get
     -s SRC, --src=SRC                Specify log files path [cwd]
     -f FROM, --from=FROM             Filter requests from this time
     -t TO, --to=TO                   Filter requests until this time
@@ -63,7 +68,7 @@ Usage: ./apache_log_parser -s /logs -f 2016-06-30T00:00:00+0100 -t 2016-07-04T00
 The CLI library starts scanning file by the specified source path (default to CWD). 
 The results are printed directly to STDOUT, displaying hits distributed on time and by true IP:
 ```shell
-./apache_log_parser --src samples/
+apache_log_parser --src=<path_to_gz_logs>
 
 access_log.gz                  17        
 
@@ -88,7 +93,7 @@ TRUE IP                        HITS
 #### Highlight output
 Depending on the standard traffic of your server, you could want to highlight the results that are greater than a specified limit:
 ```shell
-HIGHLIGHT=200000 ./apache_log_parser --src samples/
+HIGHLIGHT=200000 apache_log_parser --src=<path_to_gz_logs>
 ```
 
 ### Filters
@@ -103,13 +108,13 @@ You can refine results by combining different filters:
 #### Limit data
 Since the list of true IP could be large you can limit the number printed data by using an environment variable:
 ```shell
-LIMIT=10 ./apache_log_parser
+LIMIT=10 apache_log_parser --src=<path_to_gz_logs>
 ``` 
 
 #### Custom regex
 In case you need to specify a custom regex to capture log data you can use an environment variable (remember to use the same group names):
 ```shell
-REGEX="^(?<true_client_ip>(?:[0-9]{1,3}\.){3}[0-9]{1,3}|-)" ./apache_log_parser
+REGEX="^(?<true_client_ip>(?:[0-9]{1,3}\.){3}[0-9]{1,3}|-)" apache_log_parser
 ```
 
 ### CSV export
@@ -120,31 +125,31 @@ Remember that the `user_agent`, `request` and `code` data are only captured if t
 
 #### Detect bots
 ```shell
-./apache_log_parser -src=<path_to_gz_logs> --agent="[spring|google]bot"
+apache_log_parser --src=<path_to_gz_logs> --agent="[spring|google]bot"
 ``` 
 
 #### Detect errors
 ```shell
-./apache_log_parser -src=<path_to_gz_logs> --code=50*
+apache_log_parser --src=<path_to_gz_logs> --code=50*
 ```
 
 #### Check specific time window
 You can specify different time zones and they will be observed:
 ```shell
-./apache_log_parser -src=<path_to_gz_logs> --from=2016-07-03T04:10:13+0200 --to=2016-07-03T05:33:01+0400
+apache_log_parser --src=<path_to_gz_logs> --from=2016-07-03T04:10:13+0200 --to=2016-07-03T05:33:01+0400
 ```
 
 #### Combining filters
 You can combine available filters for more granular data analysis.
 ```shell
-./apache_log_parser -src=<path_to_gz_logs> \
-                    --from=2016-07-03T04:10:13+0100 \
-                    --to=2016-07-03T05:33:01+0100 \
-                    --code=302 \
-                    --ip=66.249.66.63 \
-                    --verb=get \
-                    --request=jpg \
-                    --agent=iphone
+apache_log_parser --src=<path_to_gz_logs> \
+                  --from=2016-07-03T04:10:13+0100 \
+                  --to=2016-07-03T05:33:01+0100 \
+                  --code=302 \
+                  --ip=66.249.66.63 \
+                  --verb=get \
+                  --request=jpg \
+                  --agent=iphone
 ```
 
 ## Performance
