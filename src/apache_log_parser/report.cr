@@ -1,14 +1,18 @@
 require "colorize"
+require "csv"
 require "./row.cr"
 
 module ApacheLogParser
   class Report
+    extend Prompt
+
     HOUR_FORMAT = "%F %Hh"
     DATA_WIDTH = 30
     HITS_WIDTH = 10
     HR = "-" * (DATA_WIDTH + HITS_WIDTH)
     LIMIT = ENV.fetch("LIMIT") { "-1" }
     HIGHLIGHT = ENV.fetch("HIGHLIGHT") { "200000" }
+    EXPORT = ENV.fetch("EXPORT") { File.expand_path(".") }
 
     @highlight : Int32
 
@@ -19,12 +23,21 @@ module ApacheLogParser
       @highlight = highlight.to_i
     end
 
-    def render(rows, io : IO, limit = LIMIT)
+    def render(rows, output = STDOUT, limit = LIMIT)
       return if rows.empty?
       collect_hits(rows)
-      io.puts title(rows.size)
-      io.puts hits(title: "HOUR", data: @hits_by_hour, limit: -1)
-      io.puts hits(title: "TRUE IP", data: @hits_by_ip, limit: limit.to_i32, sort: true)
+      output.puts title(rows.size)
+      output.puts hits(title: "HOUR", data: @hits_by_hour, limit: -1)
+      output.puts hits(title: "TRUE IP", data: @hits_by_ip, limit: limit.to_i32, sort: true)
+    end
+
+    def to_csv(rows, io = csv_file)
+      CSV.build(io) do |csv|
+        csv.row rows.first.to_h.keys
+        rows.each do |row|
+          csv.row row.to_h.values
+        end
+      end
     end
 
     private def collect_hits(rows)
@@ -76,6 +89,12 @@ module ApacheLogParser
     private def highlight(hits)
       return hits.to_s if hits < @highlight
       hits.to_s.colorize(:red).bold
+    end
+
+    private def csv_file
+      name = @name.sub(File.extname(@name), ".csv")
+      path = File.join(EXPORT, name)
+      File.open(path, "w+")
     end
   end
 end

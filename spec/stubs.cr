@@ -10,7 +10,13 @@ module Stubs
   class Row
     getter :time, :request, :status, :user_agent, :true_client_ip
 
-    def initialize(@time : Time, @request : String, @status : String, @user_agent : String, @true_client_ip : String)
+    def initialize(@time : Time, @request : String, 
+                   @status : String, @user_agent : String, 
+                   @true_client_ip : String)
+    end
+
+    def to_h
+      { time: @time, request: @request, status: @status, user_agent: @user_agent, true_client_ip: @true_client_ip }
     end
   end
 
@@ -23,5 +29,22 @@ module Stubs
                       i.even? ? "211.157.178.224" : "-")
       rows
     end
+  end
+
+  class Report
+    def self.ask(msg, stdout = IO::Memory.new, stdin = IO::Memory.new("n"))
+      yield
+    end
+
+    def initialize(@name : String); end
+
+    def render(rows = [] of Row); end
+
+    def to_csv(rows = [] of Row, io = STDOUT); end
+
+  end
+
+  class Prompt
+    extend ApacheLogParser::Prompt
   end
 end

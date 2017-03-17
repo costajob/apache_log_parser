@@ -7,6 +7,7 @@
   * [Help](#help)
   * [Output](#output)
   * [Filters](#filters)
+  * [CSV export](#csv-export)
   * [Examples](#examples)
 * [Performance](#performance)
   * [Platform](#platform)
@@ -110,6 +111,10 @@ In case you need to specify a custom regex to capture log data you can use an en
 ```shell
 REGEX="^(?<true_client_ip>(?:[0-9]{1,3}\.){3}[0-9]{1,3}|-)" ./apache_log_parser
 ```
+
+### CSV export
+At the end of the scanning you can export a CSV with filtered data into the current folder (or by defining the EXPORT environment variable). 
+Remember that the `user_agent`, `request` and `code` data are only captured if the relative filters have been specified.
 
 ### Examples
 

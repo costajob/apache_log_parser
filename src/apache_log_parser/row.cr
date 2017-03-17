@@ -13,5 +13,9 @@ module ApacheLogParser
       @user_agent = data["user_agent"]? || EMPTY
       @true_client_ip = data["true_client_ip"]? || EMPTY
     end
+
+    def to_h
+      { time: @time, request: @request, status: @status, user_agent: @user_agent, true_client_ip: @true_client_ip }
+    end
   end
 end

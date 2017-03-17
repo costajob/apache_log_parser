@@ -9,12 +9,12 @@ module ApacheLogParser
 
     def initialize
       @filters = [] of Filters::Base
-      @src = "./"
+      @src = File.expand_path(".")
     end
 
     def call
       setup
-      Scanner.new(@src, @filters).call(STDOUT)
+      Scanner.new(@src, @filters).call
     end
 
     private def setup
