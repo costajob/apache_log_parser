@@ -119,8 +119,12 @@ REGEX="^(?<true_client_ip>(?:[0-9]{1,3}\.){3}[0-9]{1,3}|-)" apache_log_parser
 ```
 
 ### CSV export
-At the end of the scanning you can export a CSV with filtered data into the current folder (or by defining the EXPORT environment variable). 
+At the end of the scanning you are asked to export a CSV with filtered data into the current folder (or by defining the EXPORT environment variable). 
 Remember that the `user_agent`, `request` and `code` data are only captured if the relative filters have been specified.
+It is also possible to skip asking by using an environment variable:
+```shell
+ASK=n apache_log_parser
+```
 
 ### Examples
 

@@ -5,7 +5,7 @@ module ApacheLogParser
     VALID_ANSWERS = %w[Y y N n]
 
     def ask(msg, output = STDOUT, input = STDIN)
-      res = ""
+      res = ENV.fetch("ASK") { "" }
       until VALID_ANSWERS.includes?(res)
         output.puts "\n#{msg} (Y/N)?".colorize(:cyan).bold
         res = input.gets.as(String).chomp
