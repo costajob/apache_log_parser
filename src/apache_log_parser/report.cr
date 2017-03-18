@@ -76,14 +76,14 @@ module ApacheLogParser
     end
 
     private def normalize_data(data, sort)
-      data.delete("-")
+      data.delete("")
       data = data.to_a
       data.sort! { |x, y| y[1] <=> x[1] } if sort
       data
     end
 
     private def skip_header?(data)
-      data.size == 1 && data.keys.includes?("-")
+      data.size == 1 && data.keys.includes?("")
     end
 
     private def highlight(hits)

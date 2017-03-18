@@ -40,8 +40,8 @@ module ApacheLogParser
           @filters << Filters::Status.new(code)
         end
 
-        parser.on("-i IP", "--ip=IP", "Filter by true client IP") do |ip|
-          @filters << Filters::TrueClientIP.new(ip)
+        parser.on("-i IPS", "--ips=IPS", "Filter by list of true client IPs") do |ips|
+          @filters << Filters::TrueClientIP.new(ips)
         end
 
         parser.on("-r REQUEST", "--request=REQUEST", "Filter HTTP request by regex") do |request|

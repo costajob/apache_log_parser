@@ -31,12 +31,15 @@ module ApacheLogParser
     end
 
     class TrueClientIP < Base
-      def initialize(ip : String)
-        @ip = ip
+
+      @ips : Array(String)
+
+      def initialize(ips : String)
+        @ips = ips.split(",").map(&.strip)
       end
 
       def matches?(row)
-        row.true_client_ip == @ip
+        @ips.includes?(row.true_client_ip)
       end
     end
 

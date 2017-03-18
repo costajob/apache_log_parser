@@ -57,7 +57,7 @@ Usage: apache_log_parser -s /logs -f 2016-06-30T00:00:00+0100 -t 2016-07-04T00:0
     -f FROM, --from=FROM             Filter requests from this time
     -t TO, --to=TO                   Filter requests until this time
     -c CODE, --code=CODE             Filter by HTTP code
-    -i IP, --ip=IP                   Filter by true client IP
+    -i IPS, --ips=IPS                Filter by list of true client IPs
     -r REQUEST, --request=REQUEST    Filter HTTP request by regex
     -a AGENT, --agent=AGENT          Filter user agent by regex
     -v VERB, --verb=VERB             Filter by HTTP verb
@@ -151,7 +151,7 @@ apache_log_parser --src=<path_to_gz_logs> \
                   --from=2016-07-03T04:10:13+0100 \
                   --to=2016-07-03T05:33:01+0100 \
                   --code=302 \
-                  --ip=66.249.66.63 \
+                  --ips=66.249.66.63,61.148.244.148 \
                   --verb=get \
                   --request=jpg \
                   --agent=iphone

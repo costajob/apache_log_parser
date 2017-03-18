@@ -24,9 +24,9 @@ describe ApacheLogParser::Scanner do
 
   it "should collect results by true client IP filter" do
     filters = [] of ApacheLogParser::Filters::Base
-    filters << ApacheLogParser::Filters::TrueClientIP.new("221.127.193.144")
+    filters << ApacheLogParser::Filters::TrueClientIP.new("221.127.193.144, 182.139.30.248")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
-    scanner.call(Stubs::Report).should eq [4]
+    scanner.call(Stubs::Report).should eq [7]
   end
 
   it "should collect results by HTTP verb filter" do
@@ -55,10 +55,11 @@ describe ApacheLogParser::Scanner do
     filters << ApacheLogParser::Filters::From.new("2016-07-03T04:56:22+0200")
     filters << ApacheLogParser::Filters::To.new("2016-07-03T04:56:27+0200")
     filters << ApacheLogParser::Filters::Status.new("304")
+    filters << ApacheLogParser::Filters::TrueClientIP.new("126.245.6.49, 61.148.244.148")
     filters << ApacheLogParser::Filters::Verb.new("get")
     filters << ApacheLogParser::Filters::Request.new("jpg")
     filters << ApacheLogParser::Filters::UserAgent.new("iphone")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
-    scanner.call(Stubs::Report).should eq [6]
+    scanner.call(Stubs::Report).should eq [4]
   end
 end
