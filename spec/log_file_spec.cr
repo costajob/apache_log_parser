@@ -11,12 +11,14 @@ describe ApacheLogParser::LogFile do
     log_file.name.should eq "access_log.gz"
   end 
 
-  it "should raise an error for invalid line format" do
+  it "should prevent collecting data when there are no matchings" do
     src = File.expand_path("../../samples/access_log.gz", __FILE__)
-    expect_raises(ApacheLogParser::LogFile::InvalidFormatError) do
-      log_file = ApacheLogParser::LogFile.new(src, -> { /NOENT/ })
-      log_file.each_row {}
+    log_file = ApacheLogParser::LogFile.new(src, -> { /NOENT/ })
+    rows = [] of ApacheLogParser::Row
+    log_file.each_row do |row|
+      rows << row
     end
+    rows.size.should eq 0
   end
 
   it "should collect data for each line" do

@@ -5,21 +5,21 @@ describe ApacheLogParser::Scanner do
     filters = [] of ApacheLogParser::Filters::Base
     filters << ApacheLogParser::Filters::From.new("2016-07-03T04:56:24+0200")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
-    scanner.call(Stubs::Report).should eq [24]
+    scanner.call(Stubs::Report).should eq [20]
   end
 
   it "should collect results till time filter" do
     filters = [] of ApacheLogParser::Filters::Base
     filters << ApacheLogParser::Filters::To.new("2016-07-03T04:56:25+0200")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
-    scanner.call(Stubs::Report).should eq [13]
+    scanner.call(Stubs::Report).should eq [12]
   end
 
   it "should collect results by HTTP status filter" do
     filters = [] of ApacheLogParser::Filters::Base
     filters << ApacheLogParser::Filters::Status.new("20*")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
-    scanner.call(Stubs::Report).should eq [11]
+    scanner.call(Stubs::Report).should eq [9]
   end
 
   it "should collect results by true client IP filter" do
@@ -31,7 +31,7 @@ describe ApacheLogParser::Scanner do
 
   it "should collect results by HTTP verb filter" do
     filters = [] of ApacheLogParser::Filters::Base
-    filters << ApacheLogParser::Filters::Verb.new("head")
+    filters << ApacheLogParser::Filters::Verb.new("post")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
     scanner.call(Stubs::Report).should eq [1]
   end

@@ -6,7 +6,7 @@ module ApacheLogParser
     REQUEST = %q{ "(?<request>.*?)"}
     STATUS = %q{.*? (?<status>\d{3})}
     USER_AGENT = %q{ .+"(?<user_agent>[Mozilla|Opera|ELinks|Links|Lynx]?.+)"}
-    TRUE_IP = %q{ .*?"(?<true_client_ip>(?:[0-9]{1,3}\.){3}[0-9]{1,3}|-)"}
+    TRUE_IP = %q{ .*?"(?<true_client_ip>(?:[0-9]{1,3}\.){3}[0-9]{1,3})"}
     ORDERED = [TIME, REQUEST, STATUS, USER_AGENT, TRUE_IP]
     FILTERS_REGEX_PAIRS = [
       {["Request", "Verb"], REQUEST},
