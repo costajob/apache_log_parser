@@ -48,7 +48,7 @@ module ApacheLogParser
     end
 
     private def title(n)
-      ("\n%-#{DATA_WIDTH}s %-#{HITS_WIDTH}\d\n" % [@name, n]).colorize(:yellow).bold
+      ("\n\n%-#{DATA_WIDTH}s %-#{HITS_WIDTH}\d\n" % [@name, n]).colorize(:yellow).bold
     end
 
     private def header(title, limit)
