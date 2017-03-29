@@ -100,11 +100,11 @@ HIGHLIGHT=200000 apache_log_parser --src=<path_to_gz_logs>
 You can refine results by combining different filters:
 * from time
 * to time
-* HTTP code by regex
-* true client IP
+* HTTP code by regex (can be negated)
+* list of true client IPs
 * HTTP verb (get, post, put, delete, head, options)
-* HTTP request by regex
-* user agent by regex
+* HTTP request by regex (can be negated)
+* user agent by regex (can be negated)
 
 #### Limit data
 Since the list of true IP could be large you can limit the number printed data by using an environment variable:
@@ -142,6 +142,12 @@ apache_log_parser --src=<path_to_gz_logs> --code=50*
 You can specify different time zones and they will be observed:
 ```shell
 apache_log_parser --src=<path_to_gz_logs> --from=2016-07-03T04:10:13+0200 --to=2016-07-03T05:33:01+0400
+```
+
+#### Exclude specific results
+By using the negation form `!` (available for status, request and user agent) is possible to filter by excluding matching results:
+```shell
+apache_log_parser --src=<path_to_gz_logs> --agent=!iphone
 ```
 
 #### Combining filters

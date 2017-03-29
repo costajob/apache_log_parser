@@ -31,7 +31,6 @@ module ApacheLogParser
     end
 
     class TrueClientIP < Base
-
       @ips : Array(String)
 
       def initialize(ips : String)
@@ -45,31 +44,37 @@ module ApacheLogParser
 
     class Status < Base
       def initialize(status : String)
-        @status = /#{status}/
+        @negate = !!status.match(/^!/)
+        @regex = /#{status.delete("!")}/
       end
 
       def matches?(row)
-        row.status.match(@status)
+        return !row.status.match(@regex) if @negate
+        row.status.match(@regex)
       end
     end
 
     class Request < Base
       def initialize(request : String)
-        @request = /#{request}/i
+        @negate = !!request.match(/^!/)
+        @regex = /#{request.delete("!")}/i
       end
 
       def matches?(row)
-        row.request.match(@request)
+        return !row.request.match(@regex) if @negate
+        row.request.match(@regex)
       end
     end
 
     class UserAgent < Base
       def initialize(user_agent : String)
-        @user_agent = /#{user_agent}/i
+        @negate = !!user_agent.match(/^!/)
+        @regex = /#{user_agent.delete("!")}/i
       end
 
       def matches?(row)
-        row.user_agent.match(@user_agent)
+        return !row.user_agent.match(@regex) if @negate
+        row.user_agent.match(@regex)
       end
     end
 

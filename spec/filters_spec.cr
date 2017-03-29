@@ -30,6 +30,12 @@ describe ApacheLogParser::Filters do
       filter = ApacheLogParser::Filters::Status.new("201")
       filter.matches?(Stubs.rows[0]).should be_truthy
     end
+
+    it "should match row by excluding HTTP status" do
+      filter = ApacheLogParser::Filters::Status.new("!201")
+      filter.matches?(Stubs.rows[0]).should be_falsey
+      filter.matches?(Stubs.rows[1]).should be_truthy
+    end
   end
 
   context ApacheLogParser::Filters::TrueClientIP do
@@ -45,6 +51,12 @@ describe ApacheLogParser::Filters do
       filter.matches?(Stubs.rows[0]).should be_falsey
       filter.matches?(Stubs.rows[1]).should be_truthy
     end
+
+    it "should match row by excluding keyword" do
+      filter = ApacheLogParser::Filters::Request.new("!healthcheck")
+      filter.matches?(Stubs.rows[0]).should be_truthy
+      filter.matches?(Stubs.rows[1]).should be_falsey
+    end
   end
 
   context ApacheLogParser::Filters::UserAgent do
@@ -52,6 +64,12 @@ describe ApacheLogParser::Filters do
       filter = ApacheLogParser::Filters::UserAgent.new("iphone")
       filter.matches?(Stubs.rows[0]).should be_truthy
       filter.matches?(Stubs.rows[1]).should be_falsey
+    end
+
+    it "should match row by excluding user agent" do
+      filter = ApacheLogParser::Filters::UserAgent.new("!iphone")
+      filter.matches?(Stubs.rows[0]).should be_falsey
+      filter.matches?(Stubs.rows[1]).should be_truthy
     end
   end
 
