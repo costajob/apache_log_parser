@@ -32,7 +32,7 @@ describe ApacheLogParser::Filters do
     end
 
     it "should match row by excluding HTTP status" do
-      filter = ApacheLogParser::Filters::Status.new("!201")
+      filter = ApacheLogParser::Filters::Status.new("-201")
       filter.matches?(Stubs.rows[0]).should be_falsey
       filter.matches?(Stubs.rows[1]).should be_truthy
     end
@@ -53,7 +53,7 @@ describe ApacheLogParser::Filters do
     end
 
     it "should match row by excluding keyword" do
-      filter = ApacheLogParser::Filters::Request.new("!healthcheck")
+      filter = ApacheLogParser::Filters::Request.new("-healthcheck")
       filter.matches?(Stubs.rows[0]).should be_truthy
       filter.matches?(Stubs.rows[1]).should be_falsey
     end
@@ -67,7 +67,7 @@ describe ApacheLogParser::Filters do
     end
 
     it "should match row by excluding user agent" do
-      filter = ApacheLogParser::Filters::UserAgent.new("!iphone")
+      filter = ApacheLogParser::Filters::UserAgent.new("-iphone")
       filter.matches?(Stubs.rows[0]).should be_falsey
       filter.matches?(Stubs.rows[1]).should be_truthy
     end

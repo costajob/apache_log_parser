@@ -145,9 +145,9 @@ apache_log_parser --src=<path_to_gz_logs> --from=2016-07-03T04:10:13+0200 --to=2
 ```
 
 #### Exclude specific results
-By using the negation form `!` (available for status, request and user agent) is possible to filter by excluding matching results:
+By using the negation form `-` (available for status, request and user agent) is possible to filter by excluding matching results:
 ```shell
-apache_log_parser --src=<path_to_gz_logs> --agent=!iphone
+apache_log_parser --src=<path_to_gz_logs> --agent=-iphone
 ```
 
 #### Combining filters

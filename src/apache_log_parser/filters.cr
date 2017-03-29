@@ -44,8 +44,8 @@ module ApacheLogParser
 
     class Status < Base
       def initialize(status : String)
-        @negate = !!status.match(/^!/)
-        @regex = /#{status.delete("!")}/
+        @negate = !!status.match(/^-/)
+        @regex = /#{status.sub(/^-/, "")}/
       end
 
       def matches?(row)
@@ -56,8 +56,8 @@ module ApacheLogParser
 
     class Request < Base
       def initialize(request : String)
-        @negate = !!request.match(/^!/)
-        @regex = /#{request.delete("!")}/i
+        @negate = !!request.match(/^-/)
+        @regex = /#{request.sub(/^-/, "")}/i
       end
 
       def matches?(row)
@@ -68,8 +68,8 @@ module ApacheLogParser
 
     class UserAgent < Base
       def initialize(user_agent : String)
-        @negate = !!user_agent.match(/^!/)
-        @regex = /#{user_agent.delete("!")}/i
+        @negate = !!user_agent.match(/^-/)
+        @regex = /#{user_agent.sub(/^-/, "")}/i
       end
 
       def matches?(row)
