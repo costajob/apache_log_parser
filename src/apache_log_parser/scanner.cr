@@ -9,7 +9,7 @@ module ApacheLogParser
     def initialize(@path : String, @filters : Array(Filters::Base)); end
 
     def call(report_klass = Report, regex_klass = Regex)
-      log_files(regex_klass).map do |log_file|
+      count = log_files(regex_klass).map do |log_file|
         filtered = [] of Row
         log_file.each_row do |row|
           filtered << row if @filters.all? { |filter| filter.matches?(row) }
@@ -21,6 +21,8 @@ module ApacheLogParser
         end
         filtered.size
       end
+      report_klass.render
+      count
     end
 
     private def log_files(regex_klass)

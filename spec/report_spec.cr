@@ -53,4 +53,24 @@ describe ApacheLogParser::Report do
     iter.next.should eq "time,request,status,user_agent,true_client_ip"
     iter.next.should eq "2016-02-02 11:23:01 UTC,GET / HTTP/1.1,201,\"Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13F69 Safari/601.1\",211.157.178.224"
   end
+
+  it "should render at the class level" do
+    io = IO::Memory.new
+    ApacheLogParser::Report.render(1, io)
+    io.rewind
+    iter = io.each_line
+    iter.next
+    iter.next
+    iter.next.should eq "Global report                  57        " 
+    iter.next
+    iter.next
+    iter.next.should eq "HOUR                           HITS      "
+    iter.next.should eq "\e[0m----------------------------------------"
+    iter.next.should eq "2016-02-02 11h                 57"
+    iter.next
+    iter.next.should eq "TRUE IP                        HITS      "
+    iter.next.should eq "\e[0m----------------------------------------"
+    iter.next.should eq "211.157.178.224                30"
+    iter.next.should be_a Iterator::Stop
+  end
 end

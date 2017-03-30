@@ -1,6 +1,18 @@
 require "./spec_helper.cr"
 
 describe ApacheLogParser::Regex do
+  it "should detect data for request triggered by agents" do
+    line = %q[184.26.93.175 - - [26/Mar/2017:00:00:34 +0000] "GET /_ui/responsive/akamai/akamai-test-object.html HTTP/1.1" 200 2888 "-" "-" TCIP: "127.0.0.1" "-" 3050]
+    regex = ApacheLogParser::Regex.new(%w[Status Verb UserAgent])
+    rule = regex.call
+    data = line.match(rule).as(Regex::MatchData)
+    data["time"].should eq "26/Mar/2017:00:00:34 +0000"
+    data["true_client_ip"].should eq "127.0.0.1"
+    data["request"].should eq "GET /_ui/responsive/akamai/akamai-test-object.html HTTP/1.1"
+    data["status"].should eq "200"
+    data["user_agent"].should eq "-"
+  end
+
   it "should remove status, request and user agent regexs" do
     regex = ApacheLogParser::Regex.new
     rule = regex.call

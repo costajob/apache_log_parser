@@ -36,6 +36,8 @@ module Stubs
       yield
     end
 
+    def self.render; end
+
     def initialize(@name : String); end
 
     def render(rows = [] of Row); end

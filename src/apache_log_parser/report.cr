@@ -14,6 +14,30 @@ module ApacheLogParser
     HIGHLIGHT = ENV.fetch("HIGHLIGHT") { "200000" }
     EXPORT = ENV.fetch("EXPORT") { File.expand_path(".") }
 
+    @@hits_by_hour = [] of Hash(String, Int32)
+    @@hits_by_ip = [] of Hash(String, Int32)
+
+    def self.render(skip_limit = 2, output = STDOUT)
+      return if @@hits_by_hour.size < skip_limit
+      hits_by_hour = reduce_hits(@@hits_by_hour)
+      hits_by_ip = reduce_hits(@@hits_by_ip)
+      count = hits_by_hour.sum(&.last)
+      new(name: "Global report",
+          highlight: HIGHLIGHT.to_i * skip_limit,
+          hits_by_hour: hits_by_hour,
+          hits_by_ip: hits_by_ip).write_to(output, count, LIMIT)
+    end
+
+    def self.reduce_hits(hits_data)
+      global = Hash(String, Int32).new { |h,k| h[k] = 0 }
+      hits_data.reduce(global) do |acc, hits|
+        hits.each do |k, v|
+          acc[k] += v
+        end
+        acc
+      end
+    end
+
     @highlight : Int32
 
     def initialize(@name : String,
@@ -26,9 +50,7 @@ module ApacheLogParser
     def render(rows, output = STDOUT, limit = LIMIT)
       return if rows.empty?
       collect_hits(rows)
-      output.puts title(rows.size)
-      output.puts hits(title: "HOUR", data: @hits_by_hour, limit: -1)
-      output.puts hits(title: "TRUE IP", data: @hits_by_ip, limit: limit.to_i32, sort: true)
+      write_to(output, rows.size, limit)
     end
 
     def to_csv(rows, io = csv_file)
@@ -40,11 +62,23 @@ module ApacheLogParser
       end
     end
 
+    def write_to(output, count, limit)
+      output.puts title(count)
+      output.puts hits(title: "HOUR", data: @hits_by_hour, sort: :key)
+      output.puts hits(title: "TRUE IP", data: @hits_by_ip, sort: :val, limit: limit.to_i32)
+    end
+
+    private def collect_global
+      @@hits_by_hour << @hits_by_hour
+      @@hits_by_ip << @hits_by_ip
+    end
+
     private def collect_hits(rows)
       rows.each do |row|
         @hits_by_hour[row.time.to_s(HOUR_FORMAT)] += 1
         @hits_by_ip[row.true_client_ip] += 1
       end
+      collect_global
     end
 
     private def title(n)
@@ -64,7 +98,7 @@ module ApacheLogParser
       " (top #{limit})"
     end
 
-    private def hits(title, data, limit, sort = false)
+    private def hits(title, data, sort, limit = -1)
       return if skip_header?(data)
       String.build do |str|
         str << header(title, limit)
@@ -78,8 +112,13 @@ module ApacheLogParser
     private def normalize_data(data, sort)
       data.delete("")
       data = data.to_a
-      data.sort! { |x, y| y[1] <=> x[1] } if sort
-      data
+      data.sort! do |x, y| 
+        if sort == :key
+          x[0] <=> y[0]
+        else
+          y[1] <=> x[1]
+        end
+      end
     end
 
     private def skip_header?(data)
