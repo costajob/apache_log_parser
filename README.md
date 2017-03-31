@@ -38,7 +38,7 @@ The following fields are captured from each line by using a named-group regex:
 * *true_ip*: since most of the applications run behind a CDN, the True IP of the client
 
 ## Usage
-Isnatll last Crystal version and clone the repository: 
+Install last Crystal version and clone the repository: 
 ```shell
 git clone https://github.com/costajob/apache_log_parser.git
 ```
@@ -90,7 +90,7 @@ TRUE IP                        HITS
 ```
 
 #### Global report
-If more than one log file is scannd, a global report is printed by collecting all of the parsed data.
+If more than one log file is scanned, a global report is printed by collecting all of the parsed data.
 
 #### Highlight output
 Depending on the standard traffic of your server, you could want to highlight the results that are greater than a specified limit:
@@ -179,14 +179,14 @@ The following benchmarks was measured on a MacBook PRO 15 late 2015, 4CPUs, 16GB
 
 |  Applied filter/s      | Total results      | Execution time     |   RAM peak (MB) |
 | :--------------------- | -----------------: | -----------------: |---------------: |
-| no filters             |           3648593  |         1m59.219s  |         606.06  |
-| time range             |           1519655  |         1m58.682s  |         191.14  |
-| HTTP code              |           3574291  |          2m2.071s  |         706.33  |
-| true IP                |              9059  |         1m56.502s  |           4.61  |
-| request                |            521490  |          2m0.429s  |         124.77  |
-| user agent             |           1518551  |         2m25.625s  |         454.03  |
-| all combined           |                 4  |         2m31.756s  |           5.23  |
+| no filters             |           3917386  |          2m9.971s  |         601.99  |
+| from/to                |           1803951  |         2m14.297s  |         331.42  |
+| code                   |           3183506  |         2m14.902s  |         712.77  |
+| ips                    |            121250  |          2m6.322s  |          28.86  |
+| request                |           2963684  |         2m22.195s  |         650.17  |
+| agent                  |           1695367  |         2m39.292s  |         612.25  |
+| combined               |              8977  |         2m47.704s  |           7.27  |
 
 ### Considerations
 Execution time is CPU-bound and remains pretty consistent no matter the used filters.  
-RAM consumption strongly depends on the number of fetched data, since each row object is kept on the stack.
+RAM consumption strongly depends on the number of fetched data and on the kind of fetched data, user agent and request being the larger.
