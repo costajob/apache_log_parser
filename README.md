@@ -52,15 +52,14 @@ Move the resulting binary in your PATH.
 Once compiled, you can check program help by typing:
 ```shell
 apache_log_parser -h
-Usage: apache_log_parser -s /logs -f 2016-06-30T00:00:00+0100 -t 2016-07-04T00:00:00+0100 -i 66.249.66.63 -c 20* -k send_mail -a iphone -v get
+Usage: apache_log_parser -s /logs -f 2016-06-30T00:00:00+0100 -t 2016-07-04T00:00:00+0100 -i 66.249.66.63 -c 20* -r send_mail -a iphone
     -s SRC, --src=SRC                Specify log files path [cwd]
     -f FROM, --from=FROM             Filter requests from this time
     -t TO, --to=TO                   Filter requests until this time
-    -c CODE, --code=CODE             Filter by HTTP code
+    -c CODE, --code=CODE             Filter HTTP code by regex
     -i IPS, --ips=IPS                Filter by list of true client IPs
     -r REQUEST, --request=REQUEST    Filter HTTP request by regex
     -a AGENT, --agent=AGENT          Filter user agent by regex
-    -v VERB, --verb=VERB             Filter by HTTP verb
     -h, --help                       Show this help
 ```
 
@@ -90,6 +89,9 @@ TRUE IP                        HITS
 59.173.177.227                 1
 ```
 
+#### Global report
+If more than one log file is scannd, a global report is printed by collecting all of the parsed data.
+
 #### Highlight output
 Depending on the standard traffic of your server, you could want to highlight the results that are greater than a specified limit:
 ```shell
@@ -102,7 +104,6 @@ You can refine results by combining different filters:
 * to time
 * HTTP code by regex (can be negated)
 * list of true client IPs
-* HTTP verb (get, post, put, delete, head, options)
 * HTTP request by regex (can be negated)
 * user agent by regex (can be negated)
 
@@ -138,6 +139,11 @@ apache_log_parser --src=<path_to_gz_logs> --agent="[spring|google]bot"
 apache_log_parser --src=<path_to_gz_logs> --code=50*
 ```
 
+#### Detect specific HTTP verb
+```shell
+apache_log_parser --src=<path_to_gz_logs> --request=^post
+```
+
 #### Check specific time window
 You can specify different time zones and they will be observed:
 ```shell
@@ -158,7 +164,6 @@ apache_log_parser --src=<path_to_gz_logs> \
                   --to=2016-07-03T05:33:01+0100 \
                   --code=302 \
                   --ips=66.249.66.63,61.148.244.148 \
-                  --verb=get \
                   --request=jpg \
                   --agent=iphone
 ```
@@ -178,7 +183,6 @@ The following benchmarks was measured on a MacBook PRO 15 late 2015, 4CPUs, 16GB
 | time range             |           1519655  |         1m58.682s  |         191.14  |
 | HTTP code              |           3574291  |          2m2.071s  |         706.33  |
 | true IP                |              9059  |         1m56.502s  |           4.61  |
-| HTTP verb              |           2754608  |          2m0.596s  |         612.20  |
 | request                |            521490  |          2m0.429s  |         124.77  |
 | user agent             |           1518551  |         2m25.625s  |         454.03  |
 | all combined           |                 4  |         2m31.756s  |           5.23  |

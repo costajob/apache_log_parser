@@ -21,7 +21,7 @@ module ApacheLogParser
       OptionParser.parse! do |parser|
         parser.banner = String.build do |str|
           str << "Usage: "
-          str << "apache_log_parser -s /logs -f 2016-06-30T00:00:00+0100 -t 2016-07-04T00:00:00+0100 -i 66.249.66.63 -c 20* -k send_mail -a iphone -v get".colorize(:light_gray).bold
+          str << "apache_log_parser -s /logs -f 2016-06-30T00:00:00+0100 -t 2016-07-04T00:00:00+0100 -i 66.249.66.63 -c 20* -r send_mail -a iphone".colorize(:light_gray).bold
         end
 
         parser.on("-s SRC", "--src=SRC", "Specify log files path [cwd]") do |src| 
@@ -50,10 +50,6 @@ module ApacheLogParser
 
         parser.on("-a AGENT", "--agent=AGENT", "Filter user agent by regex") do |agent|
           @filters << Filters::UserAgent.new(agent)
-        end
-
-        parser.on("-v VERB", "--verb=VERB", "Filter by HTTP verb") do |verb|
-          @filters << Filters::Verb.new(verb)
         end
 
         parser.on("-h", "--help", "Show this help") { puts parser }

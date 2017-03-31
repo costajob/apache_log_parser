@@ -9,7 +9,7 @@ module ApacheLogParser
     TRUE_IP = %q{ .*?"(?<true_client_ip>(?:[0-9]{1,3}\.){3}[0-9]{1,3})"}
     ORDERED = [TIME, REQUEST, STATUS, USER_AGENT, TRUE_IP]
     FILTERS_REGEX_PAIRS = [
-      {["Request", "Verb"], REQUEST},
+      {["Request"], REQUEST},
       {["Status"], STATUS},
       {["UserAgent"], USER_AGENT}
     ]

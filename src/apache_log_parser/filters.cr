@@ -77,28 +77,5 @@ module ApacheLogParser
         row.user_agent.match(@regex)
       end
     end
-
-    class Verb < Base
-      VERBS = %w[get post put delete head options]
-      VERBS_REGEX = /^(#{VERBS.join("|")})/i
-
-      class InvalidVerbError < ArgumentError; end
-
-      def initialize(@verb : String)
-        check_verb
-      end
-
-      def matches?(row)
-        @verb == fetch_verb(row)
-      end
-
-      private def check_verb
-        raise InvalidVerbError.new("#{@verb} is not supported, use one of these: #{VERBS.join(", ")}") unless VERBS.includes?(@verb)
-      end
-
-      private def fetch_verb(row)
-        row.request.match(VERBS_REGEX).try { |m| m[1].downcase }
-      end
-    end
   end
 end

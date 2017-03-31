@@ -31,7 +31,7 @@ describe ApacheLogParser::Scanner do
 
   it "should collect results by HTTP verb filter" do
     filters = [] of ApacheLogParser::Filters::Base
-    filters << ApacheLogParser::Filters::Verb.new("post")
+    filters << ApacheLogParser::Filters::Request.new("^post")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
     scanner.call(Stubs::Report).should eq [1]
   end
@@ -56,9 +56,17 @@ describe ApacheLogParser::Scanner do
     filters << ApacheLogParser::Filters::To.new("2016-07-03T04:56:27+0200")
     filters << ApacheLogParser::Filters::Status.new("304")
     filters << ApacheLogParser::Filters::TrueClientIP.new("126.245.6.49, 61.148.244.148")
-    filters << ApacheLogParser::Filters::Verb.new("get")
     filters << ApacheLogParser::Filters::Request.new("jpg")
     filters << ApacheLogParser::Filters::UserAgent.new("iphone")
+    scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
+    scanner.call(Stubs::Report).should eq [4]
+  end
+
+  it "should collect results by negating filters" do
+    filters = [] of ApacheLogParser::Filters::Base
+    filters << ApacheLogParser::Filters::Status.new("-304")
+    filters << ApacheLogParser::Filters::Request.new("-jpg")
+    filters << ApacheLogParser::Filters::UserAgent.new("-iphone")
     scanner = ApacheLogParser::Scanner.new(Stubs::DEFAULT_PATH, filters)
     scanner.call(Stubs::Report).should eq [4]
   end
