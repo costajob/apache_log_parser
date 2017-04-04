@@ -1,15 +1,24 @@
 module ApacheLogParser
   module Filters
-    abstract class Base
-      TIME_FORMAT = ENV.fetch("TIME_FORMAT") { "%FT%T%z" }
+    TIME_FORMAT = ENV.fetch("TIME_FORMAT") { "%FT%T%z" }
+    TIME_REGEX = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{4}/
 
+    class InvalidTimeFormatError < ArgumentError; end
+
+    abstract class Base
       abstract def matches?(row)
+
+      def check_format(time)
+        return true if time.match(TIME_REGEX)
+        raise InvalidTimeFormatError.new("invalid time format #{time}, use: 1973-10-29T23:10:59+0000")
+      end
     end
 
     class From < Base
       @from : Time
 
       def initialize(from : String)
+        check_format(from)
         @from = Time.parse(from, TIME_FORMAT)
       end
 
@@ -22,6 +31,7 @@ module ApacheLogParser
       @to : Time
 
       def initialize(to : String)
+        check_format(to)
         @to = Time.parse(to, TIME_FORMAT)
       end
 

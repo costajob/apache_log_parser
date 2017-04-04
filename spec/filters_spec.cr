@@ -11,6 +11,12 @@ describe ApacheLogParser::Filters do
       filter = ApacheLogParser::Filters::From.new("2036-02-02T11:23:00+0000")
       filter.matches?(Stubs.rows[0]).should be_false
     end
+
+    it "should raise an error for invalid format" do
+      expect_raises(ApacheLogParser::Filters::InvalidTimeFormatError) do
+        ApacheLogParser::Filters::From.new("02-02-2016T11:23:01+0100")
+      end
+    end
   end
 
   context ApacheLogParser::Filters::To do
@@ -22,6 +28,12 @@ describe ApacheLogParser::Filters do
     it "should not match past times" do
       filter = ApacheLogParser::Filters::To.new("2006-02-02T11:23:00+0000")
       filter.matches?(Stubs.rows[0]).should be_false
+    end
+
+    it "should raise an error for invalid format" do
+      expect_raises(ApacheLogParser::Filters::InvalidTimeFormatError) do
+        ApacheLogParser::Filters::To.new("02-02-2016T11:23:01+0100")
+      end
     end
   end
 
